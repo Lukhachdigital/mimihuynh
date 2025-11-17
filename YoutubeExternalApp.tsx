@@ -5,7 +5,7 @@ const LanguageButton = ({ language, selected, onClick }) => {
     const buttonClasses = `
         flex items-center justify-center px-4 py-2 rounded-lg border-2 transition-all duration-200
         ${isSelected
-            ? 'bg-cyan-500/20 border-cyan-500 shadow-lg shadow-cyan-500/20'
+            ? 'bg-yellow-500/20 border-yellow-500 shadow-lg shadow-yellow-500/20'
             : 'bg-slate-800 border-slate-700 hover:border-slate-500'
         }
     `;
@@ -28,7 +28,7 @@ const ResultCard = ({ language, text }) => {
 
     return React.createElement('div', { className: "bg-slate-800 p-4 rounded-lg border border-slate-700" },
         React.createElement('div', { className: "flex justify-between items-center mb-2" },
-            React.createElement('h3', { className: "font-semibold text-cyan-400" }, language),
+            React.createElement('h3', { className: "font-semibold text-yellow-400" }, language),
             React.createElement('button', { onClick: handleCopy, className: 'text-sm text-slate-400 hover:text-white transition' }, copied ? 'Đã sao chép!' : 'Sao chép')
         ),
         React.createElement('p', { className: "text-white whitespace-pre-wrap" }, text)
@@ -122,7 +122,7 @@ const YoutubeExternalApp = ({ apiKey }): React.ReactElement => {
         value: text,
         onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value),
         rows: 8,
-        className: "w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition",
+        className: "w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition",
         placeholder: "Nhập tiêu đề, mô tả hoặc kịch bản vào đây..."
     };
 
@@ -130,11 +130,11 @@ const YoutubeExternalApp = ({ apiKey }): React.ReactElement => {
         React.createElement('main', { className: 'grid grid-cols-1 lg:grid-cols-2 gap-8 flex-grow' },
             React.createElement('div', { className: 'bg-slate-900/50 p-6 rounded-2xl border border-slate-700 space-y-6' },
                 React.createElement('div', null,
-                    React.createElement('label', { htmlFor: 'text-to-translate', className: "block text-lg font-semibold text-cyan-300 mb-2" }, 'Văn bản gốc'),
+                    React.createElement('label', { htmlFor: 'text-to-translate', className: "block text-lg font-semibold text-yellow-300 mb-2" }, 'Văn bản gốc'),
                     React.createElement('textarea', textareaProps)
                 ),
                 React.createElement('div', null,
-                    React.createElement('label', { className: "block text-lg font-semibold text-cyan-300 mb-3" }, 'Dịch sang ngôn ngữ'),
+                    React.createElement('label', { className: "block text-lg font-semibold text-yellow-300 mb-3" }, 'Dịch sang ngôn ngữ'),
                     React.createElement('div', { className: "flex flex-wrap gap-3 justify-center" },
                         languages.map(lang => React.createElement(LanguageButton, {
                             key: lang.name,
@@ -147,11 +147,11 @@ const YoutubeExternalApp = ({ apiKey }): React.ReactElement => {
                 React.createElement('button', {
                     onClick: handleTranslate,
                     disabled: isLoading || !text || selectedLanguages.length === 0,
-                    className: "w-full text-lg font-bold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center bg-cyan-500 hover:bg-cyan-600 text-slate-900 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed"
+                    className: "w-full text-lg font-bold py-3 px-6 rounded-lg transition-all duration-300 flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-slate-900 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed"
                 }, isLoading ? 'Đang dịch...' : 'Dịch')
             ),
             React.createElement('div', { className: 'bg-slate-900/50 p-6 rounded-2xl border border-slate-700' },
-                React.createElement('h2', { className: 'text-lg font-semibold text-cyan-300 mb-2' }, 'Kết quả'),
+                React.createElement('h2', { className: 'text-lg font-semibold text-yellow-300 mb-2' }, 'Kết quả'),
                 error && React.createElement('div', { className: 'text-red-400 bg-red-900/50 p-3 rounded-lg mb-4' }, error),
                 React.createElement('div', { className: 'w-full h-full space-y-4 overflow-auto' },
                     isLoading

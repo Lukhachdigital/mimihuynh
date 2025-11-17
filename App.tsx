@@ -18,7 +18,7 @@ import AudioChoppingApp from './AudioChoppingApp';
 
 // --- ICONS ---
 const iconProps = {
-    className: "w-6 h-6 mr-3 text-slate-300 group-hover:text-cyan-300 transition-colors",
+    className: "w-6 h-6 mr-3 text-slate-300 group-hover:text-yellow-300 transition-colors",
     strokeWidth: "1.5"
 };
 
@@ -267,11 +267,11 @@ const ApiKeyModal = ({ onClose, onSave, initialGeminiKey, initialOpenAIKey }) =>
         onClick: onClose
     },
         React.createElement('div', {
-            className: "bg-slate-800 rounded-lg shadow-2xl w-full max-w-lg m-4 border border-cyan-500/50",
+            className: "bg-slate-800 rounded-lg shadow-2xl w-full max-w-lg m-4 border border-yellow-500/50",
             onClick: (e) => e.stopPropagation()
         },
             React.createElement('div', { className: "flex justify-between items-center p-4 border-b border-slate-700" },
-                React.createElement('h3', { className: "text-xl font-bold text-cyan-300" }, "Cài đặt API Keys"),
+                React.createElement('h3', { className: "text-xl font-bold text-yellow-300" }, "Cài đặt API Keys"),
                 React.createElement('button', {
                     onClick: onClose,
                     className: "text-slate-400 hover:text-white transition-colors",
@@ -297,34 +297,34 @@ const ApiKeyModal = ({ onClose, onSave, initialGeminiKey, initialOpenAIKey }) =>
                 React.createElement('div', {},
                     React.createElement('div', { className: "flex justify-between items-center mb-2" },
                         React.createElement('label', { htmlFor: "gemini-key", className: "block text-lg font-semibold text-slate-300" }, "Gemini API Key"),
-                        React.createElement('a', { href: "https://aistudio.google.com/app/apikey", target: "_blank", rel: "noopener noreferrer", className: "text-sm text-cyan-400 hover:text-cyan-300 underline" }, "Lấy API Key")
+                        React.createElement('a', { href: "https://aistudio.google.com/app/apikey", target: "_blank", rel: "noopener noreferrer", className: "text-sm text-yellow-400 hover:text-yellow-300 underline" }, "Lấy API Key")
                     ),
                     React.createElement('input', {
                         id: "gemini-key",
                         type: "password",
                         value: geminiKey,
                         onChange: (e) => setGeminiKey(e.target.value),
-                        className: "w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500",
+                        className: "w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-yellow-500",
                         placeholder: "Nhập Gemini API Key của bạn..."
                     })
                 ),
                 React.createElement('div', {},
                     React.createElement('div', { className: "flex justify-between items-center mb-2" },
                          React.createElement('label', { htmlFor: "openai-key", className: "block text-lg font-semibold text-slate-300" }, "OpenAI API Key"),
-                         React.createElement('a', { href: "https://platform.openai.com/api-keys", target: "_blank", rel: "noopener noreferrer", className: "text-sm text-cyan-400 hover:text-cyan-300 underline" }, "Lấy API Key")
+                         React.createElement('a', { href: "https://platform.openai.com/api-keys", target: "_blank", rel: "noopener noreferrer", className: "text-sm text-yellow-400 hover:text-yellow-300 underline" }, "Lấy API Key")
                     ),
                     React.createElement('input', {
                         id: "openai-key",
                         type: "password",
                         value: openAIKey,
                         onChange: (e) => setOpenAIKey(e.target.value),
-                        className: "w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500",
+                        className: "w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-yellow-500",
                         placeholder: "Nhập OpenAI API Key của bạn..."
                     })
                 ),
                 React.createElement('button', {
                     onClick: handleSave,
-                    className: "w-full mt-4 bg-cyan-500 hover:bg-cyan-600 text-slate-900 font-bold py-3 px-4 rounded-lg transition-all duration-300"
+                    className: "w-full mt-4 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-3 px-4 rounded-lg transition-all duration-300"
                 }, "Lưu Cài Đặt")
             )
         )
@@ -359,10 +359,10 @@ const App = () => {
     ];
     
     const socialLinks = [
-        { href: "https://youtube.com/@mimiaitwin", icon: React.createElement(IconYoutube), name: "Youtube", color: "bg-red-600 hover:bg-red-700" },
-        { href: "https://facebook.com/@mastercoachmimi", icon: React.createElement(IconFacebook), name: "Facebook", color: "bg-blue-600 hover:bg-blue-700" },
-        { href: "https://tiktok.com/@mastercoachmimi", icon: React.createElement(IconTiktok), name: "Tiktok", color: "bg-gray-900 hover:bg-gray-800" },
-        { href: "https://zalo.me/0909857798", icon: React.createElement(IconZalo), name: "Zalo", color: "bg-blue-500 hover:bg-blue-600" },
+        { href: "https://youtube.com/@mimiaitwin", icon: React.createElement(IconYoutube), name: "Youtube", color: "bg-amber-500 hover:bg-amber-600" },
+        { href: "https://facebook.com/@mastercoachmimi", icon: React.createElement(IconFacebook), name: "Facebook", color: "bg-amber-500 hover:bg-amber-600" },
+        { href: "https://tiktok.com/@mastercoachmimi", icon: React.createElement(IconTiktok), name: "Tiktok", color: "bg-amber-500 hover:bg-amber-600" },
+        { href: "https://zalo.me/0909857798", icon: React.createElement(IconZalo), name: "Zalo", color: "bg-amber-500 hover:bg-amber-600" },
     ];
     
     const tutorialLinks = {
@@ -423,12 +423,12 @@ const App = () => {
                 React.createElement('button', {
                     key: tool.id,
                     onClick: () => onToolClick(tool.id),
-                    className: "group bg-slate-800/50 border border-slate-700 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:bg-cyan-500/10 hover:border-cyan-500/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/20"
+                    className: "group bg-slate-800/50 border border-slate-700 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:bg-yellow-500/10 hover:border-yellow-500/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-yellow-500/20"
                 },
                     React.createElement('div', { className: 'mb-4' },
                         // Fix for line 323: Wrapped props in a variable to avoid TypeScript errors with React.cloneElement.
                         (() => {
-                            const newProps = { className: "w-10 h-10 text-cyan-400 group-hover:text-cyan-300 transition-colors" };
+                            const newProps = { className: "w-10 h-10 text-yellow-400 group-hover:text-yellow-300 transition-colors" };
                             return React.cloneElement(tool.icon, newProps);
                         })()
                     ),
@@ -474,11 +474,11 @@ const App = () => {
 
     const homeLinkProps = {
         href: "https://mimiaiacademy.com",
-        className: "flex items-center bg-slate-800/60 backdrop-blur-sm border border-cyan-500 text-cyan-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-cyan-500/10 hover:bg-cyan-500/20 hover:text-cyan-200 hover:shadow-cyan-500/30 transition-all duration-300 transform hover:-translate-y-1"
+        className: "flex items-center bg-slate-800/60 backdrop-blur-sm border border-yellow-500 text-yellow-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-yellow-500/10 hover:bg-yellow-500/20 hover:text-yellow-200 hover:shadow-yellow-500/30 transition-all duration-300 transform hover:-translate-y-1"
     };
     const freeLinkProps = {
         href: "https://mimiaiacademy.com/",
-        className: "flex items-center bg-slate-800/60 backdrop-blur-sm border border-cyan-500 text-cyan-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-cyan-500/10 hover:bg-cyan-500/20 hover:text-cyan-200 hover:shadow-cyan-500/30 transition-all duration-300 transform hover:-translate-y-1"
+        className: "flex items-center bg-slate-800/60 backdrop-blur-sm border border-yellow-500 text-yellow-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-yellow-500/10 hover:bg-yellow-500/20 hover:text-yellow-200 hover:shadow-yellow-500/30 transition-all duration-300 transform hover:-translate-y-1"
     };
     
     return (
@@ -504,7 +504,7 @@ const App = () => {
                         ),
                         React.createElement('button', { 
                             onClick: handleOpenTutorial,
-                            className: "flex items-center bg-slate-800/60 backdrop-blur-sm border border-cyan-500 text-cyan-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-cyan-500/10 hover:bg-cyan-500/20 hover:text-cyan-200 hover:shadow-cyan-500/30 transition-all duration-300 transform hover:-translate-y-1"
+                            className: "flex items-center bg-slate-800/60 backdrop-blur-sm border border-yellow-500 text-yellow-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-yellow-500/10 hover:bg-yellow-500/20 hover:text-yellow-200 hover:shadow-yellow-500/30 transition-all duration-300 transform hover:-translate-y-1"
                         }, 
                             React.createElement(IconTutorial),
                             "Hướng dẫn dùng App"
@@ -512,7 +512,7 @@ const App = () => {
                     ),
                     React.createElement('div', { className: "text-center" },
                          React.createElement('h1', { className: "text-3xl sm:text-4xl lg:text-5xl font-extrabold" },
-                            React.createElement('span', { className: "text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600" }, currentTool && currentView !== 'dashboard' ? currentTool.title : mainTitle)
+                            React.createElement('span', { className: "text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500" }, currentTool && currentView !== 'dashboard' ? currentTool.title : mainTitle)
                          ),
                          React.createElement('p', { className: "text-slate-400 mt-2 text-lg sm:text-xl" }, currentTool && currentView !== 'dashboard' ? currentTool.description : mainDescription)
                     ),
@@ -535,13 +535,13 @@ const App = () => {
                             React.createElement('div', { className: "flex flex-col items-stretch gap-2" },
                                 React.createElement('button', { 
                                     onClick: () => setShowApiKeyModal(true),
-                                    className: "flex items-center justify-center bg-slate-800/60 backdrop-blur-sm border border-cyan-500 text-cyan-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-cyan-500/10 hover:bg-cyan-500/20 hover:text-cyan-200 hover:shadow-cyan-500/30 transition-all duration-300 transform hover:-translate-y-1 whitespace-nowrap" }, 
+                                    className: "flex items-center justify-center bg-slate-800/60 backdrop-blur-sm border border-yellow-500 text-yellow-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-yellow-500/10 hover:bg-yellow-500/20 hover:text-yellow-200 hover:shadow-yellow-500/30 transition-all duration-300 transform hover:-translate-y-1 whitespace-nowrap" }, 
                                     React.createElement(IconSettings),
                                     "Cài đặt API Key"
                                 ),
                                  React.createElement('button', { 
                                     onClick: handleOpenApiKeyTutorial,
-                                    className: "flex items-center justify-center bg-slate-800/60 backdrop-blur-sm border border-slate-600 text-cyan-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-cyan-500/10 hover:bg-cyan-500/20 hover:text-cyan-200 hover:shadow-cyan-500/30 transition-all duration-300 transform hover:-translate-y-1 whitespace-nowrap" }, 
+                                    className: "flex items-center justify-center bg-slate-800/60 backdrop-blur-sm border border-slate-600 text-yellow-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-yellow-500/10 hover:bg-yellow-500/20 hover:text-yellow-200 hover:shadow-yellow-500/30 transition-all duration-300 transform hover:-translate-y-1 whitespace-nowrap" }, 
                                     React.createElement(IconTutorial),
                                     "Hướng dẫn API Key"
                                 )
@@ -557,7 +557,7 @@ const App = () => {
                                     const isActive = currentView === tool.id;
                                     const buttonClasses = `
                                         w-full flex items-center p-3 rounded-lg text-left text-base font-semibold transition-all duration-200
-                                        group ${isActive ? 'bg-cyan-500/20 text-cyan-200' : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'}
+                                        group ${isActive ? 'bg-yellow-500/20 text-yellow-200' : 'text-slate-300 hover:bg-slate-700/50 hover:text-white'}
                                     `;
                                     return React.createElement('button', {
                                         key: tool.id,
@@ -578,7 +578,7 @@ const App = () => {
                     )
                 ),
                  React.createElement('footer', { className: "text-center p-4" },
-                    React.createElement('p', { className: "text-base text-cyan-400 font-semibold tracking-wide" }, "Ứng dụng được phát triển bởi MiMi AI Academy")
+                    React.createElement('p', { className: "text-base text-yellow-400 font-semibold tracking-wide" }, "Ứng dụng được phát triển bởi MiMi AI Academy")
                 )
             )
         )

@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 
 // --- TYPES ---
@@ -15,7 +14,7 @@ interface GeneratedContent {
 const Loader = (): React.ReactElement => {
   return (
     React.createElement("div", { className: "flex items-center justify-center p-4" },
-      React.createElement("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" }),
+      React.createElement("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500" }),
       React.createElement("p", { className: "ml-3 text-gray-300" }, "AI đang viết kịch bản...")
     )
   );
@@ -48,14 +47,14 @@ const ResultPartCard = ({ part }: { part: Part }): React.ReactElement => {
 
   return (
     React.createElement("div", { className: "bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-700" },
-      React.createElement("h3", { className: "text-xl font-bold text-blue-400 mb-4" }, `Phần ${part.partNumber}`),
+      React.createElement("h3", { className: "text-xl font-bold text-yellow-400 mb-4" }, `Phần ${part.partNumber}`),
       React.createElement("div", { className: "space-y-6" },
         React.createElement("div", null,
           React.createElement("div", { className: "flex justify-between items-center mb-2" },
-            React.createElement("h4", { className: "font-semibold text-lg text-indigo-300" }, "Nội dung Voice"),
+            React.createElement("h4", { className: "font-semibold text-lg text-amber-300" }, "Nội dung Voice"),
             React.createElement("button", {
               onClick: () => copyToClipboard(part.voiceContent, setVoiceCopied),
-              className: "px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors duration-200 focus:outline-none disabled:bg-green-600",
+              className: "px-4 py-2 bg-amber-600 text-white text-sm rounded-lg hover:bg-amber-700 transition-colors duration-200 focus:outline-none disabled:bg-green-600",
               disabled: voiceCopied
             }, voiceCopied ? 'Đã sao chép!' : 'Sao chép')
           ),
@@ -65,10 +64,10 @@ const ResultPartCard = ({ part }: { part: Part }): React.ReactElement => {
         ),
         React.createElement("div", null,
            React.createElement("div", { className: "flex justify-between items-center mb-2" },
-            React.createElement("h4", { className: "font-semibold text-lg text-indigo-300" }, "Prompts Video (VEO 3.1)"),
+            React.createElement("h4", { className: "font-semibold text-lg text-amber-300" }, "Prompts Video (VEO 3.1)"),
             React.createElement("button", {
               onClick: () => copyToClipboard(allPromptsText, setPromptsCopied),
-              className: "px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors duration-200 focus:outline-none disabled:bg-green-600",
+              className: "px-4 py-2 bg-amber-600 text-white text-sm rounded-lg hover:bg-amber-700 transition-colors duration-200 focus:outline-none disabled:bg-green-600",
               disabled: promptsCopied
             }, promptsCopied ? 'Đã sao chép!' : 'Sao chép toàn bộ')
            ),
@@ -291,7 +290,7 @@ Generate the final output as a single JSON object.
                 React.createElement("label", { htmlFor: "videoIdea", className: "block text-gray-200 text-sm font-bold mb-2" }, "Ý tưởng video:"),
                 React.createElement("textarea", {
                   id: "videoIdea",
-                  className: "shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[100px] resize-y",
+                  className: "shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent min-h-[100px] resize-y",
                   placeholder: "Ví dụ: Một phi hành gia bị lạc trên một hành tinh xa lạ và phải tìm cách sinh tồn...",
                   value: videoIdea,
                   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => setVideoIdea(e.target.value),
@@ -303,7 +302,7 @@ Generate the final output as a single JSON object.
                 React.createElement("div", { className: "flex items-center" },
                   React.createElement("input", {
                     type: "number", id: "totalDuration",
-                    className: "shadow appearance-none border border-gray-600 rounded-l w-full py-3 px-4 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+                    className: "shadow appearance-none border border-gray-600 rounded-l w-full py-3 px-4 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent",
                     placeholder: "Ví dụ: 3", min: "0.2", step: "any", value: duration,
                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => setDuration(e.target.value),
                     required: true
@@ -317,15 +316,15 @@ Generate the final output as a single JSON object.
                   cinematicStyles.map((style) => React.createElement("button", {
                     key: style, type: "button",
                     onClick: () => setSelectedCinematicStyle(style),
-                    className: `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${selectedCinematicStyle === style ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800`
+                    className: `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${selectedCinematicStyle === style ? 'bg-amber-600 text-white shadow-md' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'} focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-gray-800`
                   }, style))
                 )
               ),
               React.createElement("button", {
                 type: "submit",
-                className: "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
+                className: "w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-75 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
                 disabled: loading
-              }, loading ? 'Đang tạo...' : 'Tạo Kịch Bản & Voice')
+              }, loading ? 'Đang tạo...' : 'Tạo Kịch Bản')
             )
           ),
           // Right Column
@@ -335,15 +334,13 @@ Generate the final output as a single JSON object.
               React.createElement("strong", { className: "font-bold" }, "Lỗi!"),
               React.createElement("span", { className: "block sm:inline ml-2" }, error)
             ),
-            generatedContent && generatedContent.parts && (
-              React.createElement("div", null,
-                React.createElement("div", { className: "flex flex-col sm:flex-row justify-center gap-4 mb-8" },
-                  React.createElement("button", { onClick: handleDownloadAllVoiceContent, className: "flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75 transition-colors duration-200", disabled: loading }, "Tải xuống tất cả Voice (.txt)"),
-                  React.createElement("button", { onClick: handleDownloadAllPrompts, className: "flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75 transition-colors duration-200", disabled: loading }, "Tải xuống tất cả Prompts (.txt)")
+            generatedContent && (
+              React.createElement("div", { className: "space-y-8" },
+                React.createElement("div", { className: "flex flex-col sm:flex-row justify-center gap-4 mb-4" },
+                  React.createElement("button", { onClick: handleDownloadAllVoiceContent, className: "flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200", disabled: loading }, "Tải xuống nội dung Voice (.txt)"),
+                  React.createElement("button", { onClick: handleDownloadAllPrompts, className: "flex-1 bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 transition-colors duration-200", disabled: loading }, "Tải xuống toàn bộ Prompts (.txt)")
                 ),
-                React.createElement("div", { className: "space-y-8" },
-                  generatedContent.parts.map((part, index) => React.createElement(ResultPartCard, { key: index, part: part }))
-                )
+                generatedContent.parts.map((part) => React.createElement(ResultPartCard, { key: part.partNumber, part: part }))
               )
             )
           )
@@ -352,4 +349,5 @@ Generate the final output as a single JSON object.
   );
 };
 
+// Fix: Add default export for the AutoPromptApp component.
 export default AutoPromptApp;

@@ -14,7 +14,7 @@ interface Scene {
 const Loader = (): React.ReactElement => {
   return (
     React.createElement("div", { className: "flex items-center justify-center p-4" },
-      React.createElement("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" }),
+      React.createElement("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500" }),
       React.createElement("p", { className: "ml-3 text-gray-300" }, "Đang tạo kịch bản...")
     )
   );
@@ -34,7 +34,7 @@ const SceneCard = ({ scene, sceneNumber }: { scene: Scene; sceneNumber: number }
 
   return (
     React.createElement("div", { className: "bg-gray-800 rounded-lg shadow-lg p-6 mb-6 border border-gray-700" },
-      React.createElement("h3", { className: "text-xl font-bold text-blue-400 mb-2" }, `Cảnh ${sceneNumber}`),
+      React.createElement("h3", { className: "text-xl font-bold text-yellow-400 mb-2" }, `Cảnh ${sceneNumber}`),
       scene.characterSummary && React.createElement("p", { className: "text-sm text-gray-400 mb-4 italic" },
         React.createElement("span", { className: "font-semibold" }, "Nhân vật chính: "),
         scene.characterSummary
@@ -45,7 +45,7 @@ const SceneCard = ({ scene, sceneNumber }: { scene: Scene; sceneNumber: number }
           React.createElement("p", { className: "text-gray-200 text-sm break-words pr-20" }, scene.whisk_prompt_vi),
           React.createElement("button", {
             onClick: () => copyToClipboard(scene.whisk_prompt_vi, setCopiedWhisk),
-            className: "absolute top-2 right-2 px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:bg-green-600",
+            className: "absolute top-2 right-2 px-4 py-2 bg-amber-600 text-white text-sm rounded-lg hover:bg-amber-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:bg-green-600",
             disabled: copiedWhisk
           }, copiedWhisk ? 'Đã sao chép!' : 'Sao chép')
         )
@@ -56,7 +56,7 @@ const SceneCard = ({ scene, sceneNumber }: { scene: Scene; sceneNumber: number }
           React.createElement("p", { className: "text-gray-200 text-sm break-words pr-20" }, scene.motion_prompt),
           React.createElement("button", {
             onClick: () => copyToClipboard(scene.motion_prompt, setCopiedFlow),
-            className: "absolute top-2 right-2 px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:bg-green-600",
+            className: "absolute top-2 right-2 px-4 py-2 bg-amber-600 text-white text-sm rounded-lg hover:bg-amber-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:bg-green-600",
             disabled: copiedFlow
           }, copiedFlow ? 'Đã sao chép!' : 'Sao chép')
         )
@@ -256,7 +256,7 @@ const MyChannelApp = ({ apiKey }: { apiKey: string }): React.ReactElement => {
                 React.createElement("label", { htmlFor: "videoIdea", className: "block text-gray-200 text-sm font-bold mb-2" }, "Ý tưởng video:"),
                 React.createElement("textarea", {
                   id: "videoIdea",
-                  className: "shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[100px] resize-y",
+                  className: "shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent min-h-[100px] resize-y",
                   placeholder: "Ví dụ: Một hành trình khám phá về công nghệ tương lai trên sao Hỏa...",
                   value: videoIdea,
                   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => setVideoIdea(e.target.value),
@@ -268,14 +268,14 @@ const MyChannelApp = ({ apiKey }: { apiKey: string }): React.ReactElement => {
                 React.createElement("div", { className: "flex" },
                   React.createElement("input", {
                     type: "number", id: "totalDuration",
-                    className: "shadow appearance-none border border-gray-600 rounded-l w-full py-3 px-4 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+                    className: "shadow appearance-none border border-gray-600 rounded-l w-full py-3 px-4 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent",
                     placeholder: "Ví dụ: 30", min: "1", step: "any", value: totalDuration,
                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => setTotalDuration(e.target.value),
                     required: true
                   }),
                   React.createElement("div", { className: "flex" },
-                      React.createElement("button", { type: "button", onClick: () => setDurationUnit('minutes'), className: `shadow border-y border-l border-gray-600 py-3 px-4 ${durationUnit === 'minutes' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-100'} focus:outline-none`}, "Phút"),
-                      React.createElement("button", { type: "button", onClick: () => setDurationUnit('seconds'), className: `shadow border border-gray-600 rounded-r py-3 px-4 ${durationUnit === 'seconds' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-100'} focus:outline-none`}, "Giây")
+                      React.createElement("button", { type: "button", onClick: () => setDurationUnit('minutes'), className: `shadow border-y border-l border-gray-600 py-3 px-4 ${durationUnit === 'minutes' ? 'bg-amber-600 text-white' : 'bg-gray-700 text-gray-100'} focus:outline-none`}, "Phút"),
+                      React.createElement("button", { type: "button", onClick: () => setDurationUnit('seconds'), className: `shadow border border-gray-600 rounded-r py-3 px-4 ${durationUnit === 'seconds' ? 'bg-amber-600 text-white' : 'bg-gray-700 text-gray-100'} focus:outline-none`}, "Giây")
                   )
                 )
               ),
@@ -285,13 +285,13 @@ const MyChannelApp = ({ apiKey }: { apiKey: string }): React.ReactElement => {
                   cinematicStyles.map((style) => React.createElement("button", {
                     key: style, type: "button",
                     onClick: () => setSelectedCinematicStyle(style),
-                    className: `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${selectedCinematicStyle === style ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800`
+                    className: `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${selectedCinematicStyle === style ? 'bg-amber-600 text-white shadow-md' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'} focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-gray-800`
                   }, style))
                 )
               ),
               React.createElement("button", {
                 type: "submit",
-                className: "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
+                className: "w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-75 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
                 disabled: loading
               }, loading ? 'Đang tạo...' : 'Tạo Kịch Bản')
             )
@@ -307,7 +307,7 @@ const MyChannelApp = ({ apiKey }: { apiKey: string }): React.ReactElement => {
               React.createElement("div", null,
                 React.createElement("div", { className: "flex flex-col sm:flex-row justify-center gap-4 mb-8" },
                   React.createElement("button", { onClick: handleDownloadWhiskPrompts, className: "flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75 transition-colors duration-200", disabled: loading || generatedScenes.length === 0 }, "Tải xuống Prompt Whisk (.txt)"),
-                  React.createElement("button", { onClick: handleDownloadFlowPrompts, className: "flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75 transition-colors duration-200", disabled: loading || generatedScenes.length === 0 }, "Tải xuống Prompt Flow VEO 3.1 (.txt)")
+                  React.createElement("button", { onClick: handleDownloadFlowPrompts, className: "flex-1 bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-opacity-75 transition-colors duration-200", disabled: loading || generatedScenes.length === 0 }, "Tải xuống Prompt Flow VEO 3.1 (.txt)")
                 ),
                 generatedScenes.map((scene, index) => React.createElement(SceneCard, { key: index, scene: scene, sceneNumber: index + 1 }))
               )

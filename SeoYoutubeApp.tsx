@@ -388,22 +388,22 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
 
     return React.createElement('div', { className: "space-y-6 animate-fade-in" },
       React.createElement('div', { className: "bg-gray-800 p-4 rounded-lg shadow-lg relative" },
-        React.createElement('h3', { className: "text-lg font-bold text-cyan-400 mb-2" }, "Tiêu đề đã chọn"),
+        React.createElement('h3', { className: "text-lg font-bold text-yellow-400 mb-2" }, "Tiêu đề đã chọn"),
         React.createElement('p', { className: "text-gray-200" }, selectedTitle),
         React.createElement(CopyButton, { textToCopy: selectedTitle })
       ),
       React.createElement('div', { className: "bg-gray-800 p-4 rounded-lg shadow-lg relative" },
-        React.createElement('h3', { className: "text-lg font-bold text-cyan-400 mb-2" }, "Mô tả"),
+        React.createElement('h3', { className: "text-lg font-bold text-yellow-400 mb-2" }, "Mô tả"),
         React.createElement('p', { className: "text-gray-300 whitespace-pre-wrap" }, descriptionText),
         React.createElement(CopyButton, { textToCopy: descriptionText })
       ),
       React.createElement('div', { className: "bg-gray-800 p-4 rounded-lg shadow-lg relative" },
-        React.createElement('h3', { className: "text-lg font-bold text-cyan-400 mb-2" }, "Hashtag"),
+        React.createElement('h3', { className: "text-lg font-bold text-yellow-400 mb-2" }, "Hashtag"),
         React.createElement('p', { className: "text-gray-300" }, hashtagsText),
         React.createElement(CopyButton, { textToCopy: hashtagsText })
       ),
       React.createElement('div', { className: "bg-gray-800 p-4 rounded-lg shadow-lg relative" },
-        React.createElement('h3', { className: "text-lg font-bold text-cyan-400 mb-2" }, "Từ khóa (Keywords)"),
+        React.createElement('h3', { className: "text-lg font-bold text-yellow-400 mb-2" }, "Từ khóa (Keywords)"),
         React.createElement('p', { className: "text-gray-300 leading-relaxed" }, keywordsText),
         React.createElement(CopyButton, { textToCopy: keywordsText })
       )
@@ -421,40 +421,40 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
             React.createElement('div', { className: "lg:col-span-2" },
               React.createElement('div', { className: "bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-2xl border border-gray-700 sticky top-8 space-y-6" },
                 React.createElement('div', null,
-                    React.createElement('label', { htmlFor: "description", className: "block text-lg font-semibold mb-2 text-cyan-300" }, "1. Nhập mô tả video"),
+                    React.createElement('label', { htmlFor: "description", className: "block text-lg font-semibold mb-2 text-yellow-300" }, "1. Nhập mô tả video"),
                     React.createElement('textarea', {
                     id: "description",
                     value: videoDescription,
                     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => setVideoDescription(e.target.value),
                     placeholder: "Ví dụ: Hướng Dẫn Cách Tạo Video Trên VEO 3.1 Không Giới Hạn Thời Lượng",
-                    className: "w-full h-28 p-3 bg-gray-900 border border-gray-600 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
+                    className: "w-full h-28 p-3 bg-gray-900 border border-gray-600 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors"
                     })
                 ),
                 React.createElement('div', { className: "space-y-3" },
-                  React.createElement('h3', { className: "text-md font-semibold text-cyan-300" }, "2. Tùy chỉnh Tiêu đề"),
+                  React.createElement('h3', { className: "text-md font-semibold text-yellow-300" }, "2. Tùy chỉnh Tiêu đề"),
                   React.createElement('div', { className: "grid grid-cols-3 gap-2" },
                       titleLengthOptions.map(opt => React.createElement('button', {
                           key: opt,
                           onClick: () => setSelectedTitleLength(opt),
                           disabled: isLoadingTitles,
-                          className: `px-2 py-2 text-xs rounded-md transition-colors ${selectedTitleLength === opt ? 'bg-blue-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-200'}`
+                          className: `px-2 py-2 text-xs rounded-md transition-colors ${selectedTitleLength === opt ? 'bg-amber-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-200'}`
                       }, opt))
                   )
                 ),
                 React.createElement('div', { className: "space-y-3" },
-                  React.createElement('h3', { className: "text-md font-semibold text-cyan-300" }, "3. Tùy chỉnh Mô tả"),
+                  React.createElement('h3', { className: "text-md font-semibold text-yellow-300" }, "3. Tùy chỉnh Mô tả"),
                    React.createElement('div', { className: "grid grid-cols-2 gap-2" },
                       descStyleOptions.map(style => React.createElement('button', {
                           key: style,
                           onClick: () => setSelectedDescStyle(style),
-                          className: `px-3 py-2 text-sm rounded-md transition-colors ${selectedDescStyle === style ? 'bg-blue-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-200'}`
+                          className: `px-3 py-2 text-sm rounded-md transition-colors ${selectedDescStyle === style ? 'bg-amber-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-200'}`
                       }, style))
                   )
                 ),
                 React.createElement('button', {
                   onClick: handleGenerateTitles,
                   disabled: isLoadingTitles || (!geminiApiKey && !openaiApiKey),
-                  className: "w-full flex justify-center items-center gap-2 bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className: "w-full flex justify-center items-center gap-2 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-900 font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 },
                   isLoadingTitles ? React.createElement(LoadingSpinner, null) : React.createElement('i', { className: "fas fa-magic" }),
                   isLoadingTitles ? 'Đang tạo tiêu đề...' : '4. Tạo Gợi Ý Tiêu đề'
@@ -466,7 +466,7 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
               error && React.createElement('div', { className: "p-3 bg-red-900/50 border border-red-700 text-red-300 rounded-lg text-center" }, error),
               suggestedTitles.length > 0 && (
                 React.createElement('div', { className: "bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-2xl border border-gray-700" },
-                  React.createElement('h2', { className: "text-xl font-semibold mb-4 text-cyan-300" }, "5. Chọn một tiêu đề"),
+                  React.createElement('h2', { className: "text-xl font-semibold mb-4 text-yellow-300" }, "5. Chọn một tiêu đề"),
                   React.createElement('div', { className: "space-y-3" },
                     suggestedTitles.map((title, index) => (
                       React.createElement('div', { key: index, className: "flex items-center justify-between bg-gray-900 p-3 rounded-md border border-gray-700" },
@@ -474,7 +474,7 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
                         React.createElement('button', {
                           onClick: () => handleGenerateContent(title),
                           disabled: isLoadingContent,
-                          className: "flex-shrink-0 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:bg-gray-500"
+                          className: "flex-shrink-0 bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:bg-gray-500"
                         }, 'Chọn')
                       )
                     ))

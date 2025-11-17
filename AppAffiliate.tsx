@@ -161,7 +161,7 @@ const GeneratedContent = ({ image, promptSets, isLoading }) => {
                     React.createElement('img', { src: image, alt: "Generated content", className: "w-full object-contain rounded-lg shadow-lg" }),
                     React.createElement('div', { className: "bg-slate-900/50 p-4 rounded-lg border border-slate-700/50 space-y-3" },
                         React.createElement('div', null,
-                            React.createElement('h4', { className: "font-semibold text-blue-400 flex items-center gap-2" }, React.createElement(SparklesIcon), " Lời thoại"),
+                            React.createElement('h4', { className: "font-semibold text-yellow-400 flex items-center gap-2" }, React.createElement(SparklesIcon), " Lời thoại"),
                             React.createElement('p', { className: "text-slate-300 mt-2 text-sm md:text-base" }, promptSet.description)
                         ),
                         promptSet.animationPrompt && (() => {
@@ -169,7 +169,7 @@ const GeneratedContent = ({ image, promptSets, isLoading }) => {
                             return (
                                 React.createElement('div', null,
                                     React.createElement('div', { className: "flex justify-between items-center mb-2" },
-                                        React.createElement('h4', { className: "font-semibold text-purple-400 flex items-center gap-2" }, React.createElement(FilmIcon), " Prompt Chuyển động"),
+                                        React.createElement('h4', { className: "font-semibold text-amber-400 flex items-center gap-2" }, React.createElement(FilmIcon), " Prompt Chuyển động"),
                                         React.createElement('button', {
                                             onClick: () => handleCopy(formattedPrompt),
                                             className: "flex items-center gap-1.5 px-3 py-1 text-xs bg-slate-700 text-slate-300 rounded-lg border-b-2 border-slate-800 hover:bg-slate-600 transition-all transform active:translate-y-0.5 disabled:bg-green-600 disabled:border-green-800 disabled:text-white",
@@ -406,8 +406,8 @@ const OptionGroup = ({ label, children }) => (
 const OptionButton = ({ selected, onClick, children }) => (
     React.createElement('button', {
         onClick: onClick,
-        className: `px-6 py-3 text-lg rounded-lg font-semibold tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-blue-500 transform active:translate-y-0.5 ${selected
-            ? 'bg-blue-600 text-white border-b-4 border-blue-800 shadow-xl'
+        className: `px-6 py-3 text-lg rounded-lg font-semibold tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-yellow-500 transform active:translate-y-0.5 ${selected
+            ? 'bg-amber-600 text-white border-b-4 border-amber-800 shadow-xl'
             : 'bg-slate-700 text-slate-300 border-b-4 border-slate-800 hover:bg-slate-600 shadow-lg'
             }`
     },
@@ -429,10 +429,10 @@ const AspectRatioSelector = ({ selectedRatio, onSelect, disabled }) => {
                 disabled: disabled,
                 className: `px-4 py-2 text-sm rounded-md font-semibold transition-all flex-1 ${
                     selectedRatio === ratio.id && !disabled
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-amber-600 text-white'
                         : 'bg-slate-700 hover:bg-slate-600 text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed'
                 }`
-            }, ratio.label))
+            }))
         )
     );
 };
@@ -458,7 +458,7 @@ const ControlPanel = ({
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => setOutfitSuggestion(e.target.value),
         disabled: generationMode === 'fashion',
         placeholder: generationMode === 'fashion' ? 'AI sẽ tự động phối đồ phụ & phụ kiện' : 'Ví dụ: áo khoác jean, quần tây công sở...',
-        className: "w-full bg-slate-900/70 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+        className: "w-full bg-slate-900/70 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors disabled:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
     };
     const backgroundInputProps = {
         type: "text",
@@ -466,7 +466,7 @@ const ControlPanel = ({
         value: backgroundSuggestion,
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => setBackgroundSuggestion(e.target.value),
         placeholder: generationMode === 'fashion' ? 'Ví dụ: đường phố Paris, tuần lễ thời trang...' : 'Ví dụ: studio tối giản, quầy bếp sang trọng...',
-        className: "w-full bg-slate-900/70 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+        className: "w-full bg-slate-900/70 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors"
     };
     const productInfoTextareaProps = {
         id: "product-info",
@@ -474,7 +474,7 @@ const ControlPanel = ({
         onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => setProductInfo(e.target.value),
         placeholder: generationMode === 'fashion' ? 'Ví dụ: Áo sơ mi lụa, chất liệu thoáng mát, chống nhăn...' : 'Ví dụ: Son môi siêu lì, giữ màu 8 tiếng, vitamin E...',
         rows: 6,
-        className: "w-full bg-slate-900/70 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors resize-y"
+        className: "w-full bg-slate-900/70 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors resize-y"
     };
 
     return (
@@ -541,7 +541,7 @@ const ControlPanel = ({
                     id: "generate-button",
                     onClick: handleGenerateContent,
                     disabled: isLoading || (!modelImage && !productImage && !productInfo.trim()),
-                    className: "w-full md:w-auto flex items-center justify-center gap-3 px-8 py-3 bg-blue-600 text-white font-bold rounded-lg shadow-lg border-b-4 border-blue-800 hover:bg-blue-700 disabled:bg-slate-600 disabled:border-slate-700 disabled:cursor-not-allowed transition-all transform active:translate-y-1 disabled:transform-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-blue-500"
+                    className: "w-full md:w-auto flex items-center justify-center gap-3 px-8 py-3 bg-amber-600 text-white font-bold rounded-lg shadow-lg border-b-4 border-amber-800 hover:bg-amber-700 disabled:bg-slate-600 disabled:border-slate-700 disabled:cursor-not-allowed transition-all transform active:translate-y-1 disabled:transform-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-yellow-500"
                 },
                     isLoading ? (
                         React.createElement('div', { className: "w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin" })
