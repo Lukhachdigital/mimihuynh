@@ -366,21 +366,21 @@ const App = () => {
     ];
     
     const tutorialLinks = {
-      "dashboard": "https://www.youtube.com/playlist?list=PLlpNqaFh8WE4y1ULxKgfjDWyCBWx4-LhL",
-      "prompt_json": "https://www.youtube.com/watch?v=Uql-HZz8UnM",
-      "whisk_flow": "https://www.youtube.com/channel/UCwSbzgfgu1iMfOR__AB4QGQ?sub_confirmation=1",
-      "my_channel": "https://www.youtube.com/channel/UCwSbzgfgu1iMfOR__AB4QGQ?sub_confirmation=1",
-      "viet_kich_ban": "https://www.youtube.com/watch?v=uQi0RKvnzek",
-      "ai_prompt_veo31": "https://www.youtube.com/channel/UCwSbzgfgu1iMfOR__AB4QGQ?sub_confirmation=1",
-      "auto_prompt": "https://www.youtube.com/channel/UCwSbzgfgu1iMfOR__AB4QGQ?sub_confirmation=1",
-      "audio_chopping": "https://www.youtube.com/channel/UCwSbzgfgu1iMfOR__AB4QGQ?sub_confirmation=1",
-      "audio_to_prompt": "https://www.youtube.com/channel/UCwSbzgfgu1iMfOR__AB4QGQ?sub_confirmation=1",
-      "create_thumbnail": "https://www.youtube.com/watch?v=9d9c5Q1nID8",
-      "tao_anh_trend": "https://www.youtube.com/channel/UCwSbzgfgu1iMfOR__AB4QGQ?sub_confirmation=1",
-      "create_video": "https://www.youtube.com/channel/UCwSbzgfgu1iMfOR__AB4QGQ?sub_confirmation=1",
-      "seo_youtube": "https://www.youtube.com/channel/UCwSbzgfgu1iMfOR__AB4QGQ?sub_confirmation=1",
-      "youtube_external": "https://www.youtube.com/channel/UCwSbzgfgu1iMfOR__AB4QGQ?sub_confirmation=1",
-      "app_affiliate": "https://youtu.be/N_UfSbpBAjs?si=Sjc7QUzZ9lds3ZKg"
+      "dashboard": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "prompt_json": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "whisk_flow": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "my_channel": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "viet_kich_ban": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "ai_prompt_veo31": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "auto_prompt": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "audio_chopping": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "audio_to_prompt": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "create_thumbnail": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "tao_anh_trend": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "create_video": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "seo_youtube": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "youtube_external": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A",
+      "app_affiliate": "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A"
     };
 
     useEffect(() => {
