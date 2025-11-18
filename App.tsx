@@ -473,11 +473,11 @@ const App = () => {
     const currentTool = sidebarTools.find(tool => tool.id === currentView);
 
     const homeLinkProps = {
-        href: "https://mimiaiacademy.com",
+        href: "https://mastercoachmimi.com",
         className: "flex items-center bg-slate-800/60 backdrop-blur-sm border border-yellow-500 text-yellow-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-yellow-500/10 hover:bg-yellow-500/20 hover:text-yellow-200 hover:shadow-yellow-500/30 transition-all duration-300 transform hover:-translate-y-1"
     };
     const freeLinkProps = {
-        href: "https://mimiaiacademy.com/",
+        href: "https://mastercoachmimi.com",
         className: "flex items-center bg-slate-800/60 backdrop-blur-sm border border-yellow-500 text-yellow-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-yellow-500/10 hover:bg-yellow-500/20 hover:text-yellow-200 hover:shadow-yellow-500/30 transition-all duration-300 transform hover:-translate-y-1"
     };
     
