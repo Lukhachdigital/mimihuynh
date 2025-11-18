@@ -405,13 +405,13 @@ const App = () => {
     };
 
     const handleOpenTutorial = () => {
-        const fallbackUrl = "https://www.youtube.com/channel/UCwSbzgfgu1iMfOR__AB4QGQ?sub_confirmation=1";
+        const fallbackUrl = "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A";
         const url = tutorialLinks[currentView] || tutorialLinks.dashboard || fallbackUrl;
         window.open(url, '_blank', 'noopener,noreferrer');
     };
 
     const handleOpenApiKeyTutorial = () => {
-        const apiKeyTutorialUrl = "https://www.youtube.com/watch?v=1Pi-xnnFq70";
+        const apiKeyTutorialUrl = "https://www.youtube.com/playlist?list=PLy35rmdocfIjWJHiA3HxQtPr5zbtygj7A";
         window.open(apiKeyTutorialUrl, '_blank', 'noopener,noreferrer');
     };
 
