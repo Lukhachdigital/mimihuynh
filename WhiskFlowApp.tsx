@@ -14,7 +14,7 @@ interface Scene {
 const Loader = (): React.ReactElement => {
   return (
     React.createElement("div", { className: "flex items-center justify-center p-4" },
-      React.createElement("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500" }),
+      React.createElement("div", { className: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" }),
       React.createElement("p", { className: "ml-3 text-gray-300" }, "Đang tạo kịch bản...")
     )
   );
@@ -34,7 +34,7 @@ const SceneCard = ({ scene, sceneNumber }: { scene: Scene; sceneNumber: number }
 
   return (
     React.createElement("div", { className: "bg-gray-800 rounded-lg shadow-lg p-6 mb-6 border border-gray-700" },
-      React.createElement("h3", { className: "text-xl font-bold text-yellow-400 mb-2" }, `Cảnh ${sceneNumber}`),
+      React.createElement("h3", { className: "text-xl font-bold text-blue-400 mb-2" }, `Cảnh ${sceneNumber}`),
       scene.characterSummary && React.createElement("p", { className: "text-sm text-gray-400 mb-4 italic" },
         React.createElement("span", { className: "font-semibold" }, "Nhân vật chính: "),
         scene.characterSummary
@@ -45,7 +45,7 @@ const SceneCard = ({ scene, sceneNumber }: { scene: Scene; sceneNumber: number }
           React.createElement("p", { className: "text-gray-200 text-sm break-words pr-20" }, scene.whisk_prompt_vi),
           React.createElement("button", {
             onClick: () => copyToClipboard(scene.whisk_prompt_vi, setCopiedWhisk),
-            className: "absolute top-2 right-2 px-4 py-2 bg-amber-600 text-white text-sm rounded-lg hover:bg-amber-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:bg-green-600",
+            className: "absolute top-2 right-2 px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:bg-green-600",
             disabled: copiedWhisk
           }, copiedWhisk ? 'Đã sao chép!' : 'Sao chép')
         )
@@ -56,7 +56,7 @@ const SceneCard = ({ scene, sceneNumber }: { scene: Scene; sceneNumber: number }
           React.createElement("p", { className: "text-gray-200 text-sm break-words pr-20" }, scene.motion_prompt),
           React.createElement("button", {
             onClick: () => copyToClipboard(scene.motion_prompt, setCopiedFlow),
-            className: "absolute top-2 right-2 px-4 py-2 bg-amber-600 text-white text-sm rounded-lg hover:bg-amber-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:bg-green-600",
+            className: "absolute top-2 right-2 px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800 disabled:bg-green-600",
             disabled: copiedFlow
           }, copiedFlow ? 'Đã sao chép!' : 'Sao chép')
         )
@@ -70,7 +70,7 @@ const cinematicStyles = [
 ];
 
 // --- APP COMPONENT ---
-const WhiskFlowApp = ({ apiKey }: { apiKey: string }): React.ReactElement => {
+const WhiskFlowApp = ({ geminiApiKey, openaiApiKey, selectedAIModel }: { geminiApiKey: string, openaiApiKey: string, selectedAIModel: string }): React.ReactElement => {
   const [videoIdea, setVideoIdea] = useState('');
   const [totalDuration, setTotalDuration] = useState('');
   const [durationUnit, setDurationUnit] = useState('minutes');
@@ -84,55 +84,14 @@ const WhiskFlowApp = ({ apiKey }: { apiKey: string }): React.ReactElement => {
     numberOfScenes: number,
     cinematicStyle: string
   ): Promise<Scene[]> => {
-    if (!apiKey) {
-        throw new Error("API Key is not configured.");
-    }
-    const ai = new window.GoogleGenAI({ apiKey });
-
-    const sceneSchema = {
-      type: window.GenAIType.OBJECT,
-      properties: {
-        character: {
-          type: window.GenAIType.STRING,
-          description: "Left empty, user will attach reference character in Whisk.",
-        },
-        style: {
-          type: window.GenAIType.STRING,
-          description: "Cinematic style, lighting, tone, depth of field, visual texture, camera.",
-        },
-        scene: {
-          type: window.GenAIType.STRING,
-          description: "Context, action, emotion, lighting, environment. NO specific character description. In Vietnamese.",
-        },
-        characterSummary: {
-          type: window.GenAIType.STRING,
-          description: "Summarize the main characters in this scene, e.g., '1 Nam', '1 Nữ', '1 Thú', '1 Nam và 1 Nữ', '1 Nam và 1 Thú', 'Không có nhân vật chính'.",
-        },
-        whisk_prompt_vi: {
-          type: window.GenAIType.STRING,
-          description: "Vietnamese prompt for static image generation on Whisk. Must clearly describe the context according to the script. Concise, cinematic, sufficiently detailed, evocative. No faces, clothes, gender, identity.",
-        },
-        motion_prompt: {
-          type: window.GenAIType.STRING,
-          description: "English prompt for Flow VEO 3.1. Describes camera movement, dynamic lighting, emotional rhythm, moving objects or environment. No faces, clothes, gender, identity.",
-        },
-      },
-      required: ["character", "style", "scene", "characterSummary", "whisk_prompt_vi", "motion_prompt"],
-      propertyOrdering: ["character", "style", "scene", "characterSummary", "whisk_prompt_vi", "motion_prompt"],
-    };
-
-    const fullSchema = {
-      type: window.GenAIType.ARRAY,
-      items: sceneSchema,
-    };
-
+    
     const styleInstruction = `The overall cinematic style for this video should be: ${cinematicStyle}. Elaborate on this style in each scene's 'style' field.`;
 
     const whiskPromptDescription = cinematicStyle === "Hoạt hình"
       ? `Concise, cinematic, sufficiently detailed, and emotionally evocative VIETNAMESE prompt for static image generation on Whisk, in an ANIMATED style. Crucially, this prompt MUST describe the context (bối cảnh) clearly and in detail, consistent with the scene description. This is mandatory for every single prompt. Focus on the visual composition and mood. DO NOT describe faces, clothes, gender, or identity.`
       : `Concise, cinematic, sufficiently detailed, and emotionally evocative VIETNAMESE prompt for static image generation on Whisk. The prompt MUST explicitly request a PHOTOREALISTIC, truthful, and realistic image. Crucially, this prompt MUST describe the context (bối cảnh) clearly and in detail, consistent with the scene description. This is mandatory for every single prompt. Focus on the visual composition and mood. DO NOT describe faces, clothes, gender, or identity.`;
 
-    const prompt = `
+    const commonPrompt = `
   You are an AI film scriptwriting tool that generates scene descriptions and prompts for image and video generation systems (Whisk and Flow VEO 3.1).
   Your task is to take a video idea and a total duration, divide it into 8-second scenes, and for each scene, generate a structured output. Each scene description should immediately present a high-climax visual or a pivotal moment. The narrative should focus on impactful, visually striking events directly.
 
@@ -141,44 +100,109 @@ const WhiskFlowApp = ({ apiKey }: { apiKey: string }): React.ReactElement => {
   2.  **Perfect Character Accuracy:** The 'characterSummary' field MUST be 100% accurate for every scene. Adhere strictly to the character counting rules. Inaccuracy is not acceptable.
   3.  **Specific Animal Descriptions (Whisk Prompt):** When a character is an animal (summarized as '1 Thú'), the 'whisk_prompt_vi' MUST specifically name the type of animal. For example, instead of a generic description, use phrases like 'một con nai oai vệ' (a majestic deer), 'một con voi xám khổng lồ' (a giant grey elephant), or 'một con sói đơn độc' (a lone wolf). This is mandatory for all scenes involving an animal.
 
-  Video Idea: "${videoIdea}"
-  This video will be divided into ${numberOfScenes} scenes, each 8 seconds long.
-  ${styleInstruction}
-
   Crucially, ensure the generated script maintains strong contextual consistency between the "Video Idea" and the selected "Cinematic style." For example, if the video idea involves a "forest man" and the cinematic style is "cinematic," do not include modern items like walkie-talkies or compasses in the scene descriptions or prompts. All elements (environment, objects, actions) must be thematically aligned with the core concept.
-
-  For each scene, generate the following structure as a JSON array. Ensure all fields are present and follow the specified guidelines:
-
-  {
-    "character": "Leave empty — user will attach reference character in Whisk. Provide an empty string.",
-    "style": "Cinematic style, lighting, tone, depth of field, visual texture, camera. (e.g., 'Cinematic, warm golden hour, shallow depth of field, soft grain, handheld close-up.')",
-    "scene": "In Vietnamese, you MUST describe the context (bối cảnh), action, emotion, lighting, and environment. A detailed context description is mandatory for every scene. DO NOT describe specific characters (faces, clothes, gender, identity). Focus on the atmosphere and overall situation. This description should go straight to the main high-climax point or pivotal moment of the scene.",
-    "characterSummary": "Summarize the main characters appearing in this scene, adhering to a maximum of 2 main human characters (1 Nam, 1 Nữ) and potentially 1 giant animal character (1 Thú). Examples: '1 Nam', '1 Nữ', '1 Thú', '1 Nam và 1 Nữ', '1 Nam và 1 Thú', '1 Nữ và 1 Thú', 'Không có nhân vật chính'. If the scene implies characters that are not a main boy/girl/giant animal, describe them generally (e.g., 'nhóm người', 'đám đông') but do not count them in the summary. It is absolutely critical that this summary is accurate for every single scene without exception. There must be no errors.",
-    "whisk_prompt_vi": "${whiskPromptDescription}",
-    "motion_prompt": "English prompt for Flow VEO 3.1. Describe camera movement (e.g., 'slow zoom out', 'subtle pan left'), dynamic lighting (e.g., 'flickering shadows'), emotional rhythm, and moving objects or environmental elements (e.g., 'leaves rustling', 'gentle sway of water'). DO NOT describe faces, clothes, gender, or identity. This prompt should be independent from 'whisk_prompt_vi' and focus solely on motion."
-  }
-
-  Generate a JSON array with ${numberOfScenes} scene objects, following the video idea and scene-by-scene progression.
-  The narrative should have a realistic cinematic tone, natural lighting, and an emotional, narrative rhythm.
   `;
 
     try {
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-pro",
-        contents: prompt,
-        config: {
-          responseMimeType: "application/json",
-          responseSchema: fullSchema,
-        },
-      });
+        if (selectedAIModel === 'gemini') {
+            if (!geminiApiKey) {
+                throw new Error("API Key Gemini chưa được cấu hình.");
+            }
+            const ai = new window.GoogleGenAI({ apiKey: geminiApiKey });
+    
+            const sceneSchema = {
+              type: window.GenAIType.OBJECT,
+              properties: {
+                character: { type: window.GenAIType.STRING, description: "Left empty, user will attach reference character in Whisk." },
+                style: { type: window.GenAIType.STRING, description: "Cinematic style, lighting, tone, depth of field, visual texture, camera." },
+                scene: { type: window.GenAIType.STRING, description: "Context, action, emotion, lighting, environment. NO specific character description. In Vietnamese." },
+                characterSummary: { type: window.GenAIType.STRING, description: "Summarize the main characters in this scene, e.g., '1 Nam', '1 Nữ', '1 Thú', '1 Nam và 1 Nữ', '1 Nam và 1 Thú', 'Không có nhân vật chính'." },
+                whisk_prompt_vi: { type: window.GenAIType.STRING, description: "Vietnamese prompt for static image generation on Whisk. Must clearly describe the context according to the script. Concise, cinematic, sufficiently detailed, evocative. No faces, clothes, gender, identity." },
+                motion_prompt: { type: window.GenAIType.STRING, description: "English prompt for Flow VEO 3.1. Describes camera movement, dynamic lighting, emotional rhythm, moving objects or environment. No faces, clothes, gender, identity." },
+              },
+              required: ["character", "style", "scene", "characterSummary", "whisk_prompt_vi", "motion_prompt"],
+            };
+    
+            const fullSchema = { type: window.GenAIType.ARRAY, items: sceneSchema };
 
-      const jsonStr = response.text.trim();
-      return JSON.parse(jsonStr) as Scene[];
+            const prompt = `${commonPrompt}
+            Video Idea: "${videoIdea}"
+            This video will be divided into ${numberOfScenes} scenes, each 8 seconds long.
+            ${styleInstruction}
+
+            For each scene, generate the following structure as a JSON array. Ensure all fields are present and follow the specified guidelines:
+            {
+              "character": "Leave empty — user will attach reference character in Whisk. Provide an empty string.",
+              "style": "Cinematic style, lighting, tone, depth of field, visual texture, camera. (e.g., 'Cinematic, warm golden hour, shallow depth of field, soft grain, handheld close-up.')",
+              "scene": "In Vietnamese, you MUST describe the context (bối cảnh), action, emotion, lighting, and environment. A detailed context description is mandatory for every scene. DO NOT describe specific characters (faces, clothes, gender, identity). Focus on the atmosphere and overall situation. This description should go straight to the main high-climax point or pivotal moment of the scene.",
+              "characterSummary": "Summarize the main characters appearing in this scene, adhering to a maximum of 2 main human characters (1 Nam, 1 Nữ) and potentially 1 giant animal character (1 Thú). Examples: '1 Nam', '1 Nữ', '1 Thú', '1 Nam và 1 Nữ', '1 Nam và 1 Thú', '1 Nữ và 1 Thú', 'Không có nhân vật chính'. If the scene implies characters that are not a main boy/girl/giant animal, describe them generally (e.g., 'nhóm người', 'đám đông') but do not count them in the summary. It is absolutely critical that this summary is accurate for every single scene without exception. There must be no errors.",
+              "whisk_prompt_vi": "${whiskPromptDescription}",
+              "motion_prompt": "English prompt for Flow VEO 3.1. Describe camera movement (e.g., 'slow zoom out', 'subtle pan left'), dynamic lighting (e.g., 'flickering shadows'), emotional rhythm, and moving objects or environmental elements (e.g., 'leaves rustling', 'gentle sway of water'). DO NOT describe faces, clothes, gender, or identity. This prompt should be independent from 'whisk_prompt_vi' and focus solely on motion."
+            }
+            Generate a JSON array with ${numberOfScenes} scene objects, following the video idea and scene-by-scene progression.
+            The narrative should have a realistic cinematic tone, natural lighting, and an emotional, narrative rhythm.
+            `;
+            
+            const response = await ai.models.generateContent({
+              model: "gemini-2.5-pro",
+              contents: prompt,
+              config: {
+                responseMimeType: "application/json",
+                responseSchema: fullSchema,
+              },
+            });
+      
+            const jsonStr = response.text.trim();
+            return JSON.parse(jsonStr) as Scene[];
+        } else { // OpenAI
+            if (!openaiApiKey) {
+                throw new Error("API Key OpenAI chưa được cấu hình.");
+            }
+            const systemPrompt = `${commonPrompt}
+            Your final output must be a single, valid JSON object with one key: "scenes". The value of "scenes" should be an array of scene objects. Each scene object must contain the following keys: "character", "style", "scene", "characterSummary", "whisk_prompt_vi", "motion_prompt".`;
+
+            const userPrompt = `Video Idea: "${videoIdea}"
+            This video will be divided into ${numberOfScenes} scenes, each 8 seconds long.
+            ${styleInstruction}
+            whisk_prompt_vi description: "${whiskPromptDescription}"
+            Generate a JSON object with a "scenes" array containing ${numberOfScenes} scene objects.`;
+            
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${openaiApiKey}`
+                },
+                body: JSON.stringify({
+                    model: 'gpt-5.1',
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: userPrompt }
+                    ],
+                    response_format: { type: 'json_object' }
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error?.message || `HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const jsonText = data.choices[0].message.content;
+            const parsedResponse = JSON.parse(jsonText);
+            
+            if (!parsedResponse.scenes || !Array.isArray(parsedResponse.scenes)) {
+              throw new Error("Invalid response format from OpenAI. Expected a 'scenes' array.");
+            }
+            
+            return parsedResponse.scenes;
+        }
     } catch (error) {
       console.error("Error generating script:", error);
       throw new Error("Failed to generate script. Please try again.");
     }
-  }, [apiKey]);
+  }, [geminiApiKey, openaiApiKey, selectedAIModel]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -253,7 +277,7 @@ const WhiskFlowApp = ({ apiKey }: { apiKey: string }): React.ReactElement => {
                 React.createElement("label", { htmlFor: "videoIdea", className: "block text-gray-200 text-sm font-bold mb-2" }, "Ý tưởng video:"),
                 React.createElement("textarea", {
                   id: "videoIdea",
-                  className: "shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent min-h-[100px] resize-y",
+                  className: "shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[100px] resize-y",
                   placeholder: "Ví dụ: Một hành trình khám phá về công nghệ tương lai trên sao Hỏa...",
                   value: videoIdea,
                   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => setVideoIdea(e.target.value),
@@ -265,14 +289,14 @@ const WhiskFlowApp = ({ apiKey }: { apiKey: string }): React.ReactElement => {
                 React.createElement("div", { className: "flex" },
                   React.createElement("input", {
                     type: "number", id: "totalDuration",
-                    className: "shadow appearance-none border border-gray-600 rounded-l w-full py-3 px-4 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent",
+                    className: "shadow appearance-none border border-gray-600 rounded-l w-full py-3 px-4 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
                     placeholder: "Ví dụ: 30", min: "1", step: "any", value: totalDuration,
                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => setTotalDuration(e.target.value),
                     required: true
                   }),
                   React.createElement("div", { className: "flex" },
-                      React.createElement("button", { type: "button", onClick: () => setDurationUnit('minutes'), className: `shadow border-y border-l border-gray-600 py-3 px-4 ${durationUnit === 'minutes' ? 'bg-amber-600 text-white' : 'bg-gray-700 text-gray-100'} focus:outline-none`}, "Phút"),
-                      React.createElement("button", { type: "button", onClick: () => setDurationUnit('seconds'), className: `shadow border border-gray-600 rounded-r py-3 px-4 ${durationUnit === 'seconds' ? 'bg-amber-600 text-white' : 'bg-gray-700 text-gray-100'} focus:outline-none`}, "Giây")
+                      React.createElement("button", { type: "button", onClick: () => setDurationUnit('minutes'), className: `shadow border-y border-l border-gray-600 py-3 px-4 ${durationUnit === 'minutes' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-100'} focus:outline-none`}, "Phút"),
+                      React.createElement("button", { type: "button", onClick: () => setDurationUnit('seconds'), className: `shadow border border-gray-600 rounded-r py-3 px-4 ${durationUnit === 'seconds' ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-100'} focus:outline-none`}, "Giây")
                   )
                 )
               ),
@@ -282,13 +306,13 @@ const WhiskFlowApp = ({ apiKey }: { apiKey: string }): React.ReactElement => {
                   cinematicStyles.map((style) => React.createElement("button", {
                     key: style, type: "button",
                     onClick: () => setSelectedCinematicStyle(style),
-                    className: `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${selectedCinematicStyle === style ? 'bg-amber-600 text-white shadow-md' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'} focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-gray-800`
+                    className: `px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${selectedCinematicStyle === style ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800`
                   }, style))
                 )
               ),
               React.createElement("button", {
                 type: "submit",
-                className: "w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-75 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
+                className: "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
                 disabled: loading
               }, loading ? 'Đang tạo...' : 'Tạo Kịch Bản')
             )
@@ -304,7 +328,7 @@ const WhiskFlowApp = ({ apiKey }: { apiKey: string }): React.ReactElement => {
               React.createElement("div", null,
                 React.createElement("div", { className: "flex flex-col sm:flex-row justify-center gap-4 mb-8" },
                   React.createElement("button", { onClick: handleDownloadWhiskPrompts, className: "flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75 transition-colors duration-200", disabled: loading || generatedScenes.length === 0 }, "Tải xuống Prompt Whisk (.txt)"),
-                  React.createElement("button", { onClick: handleDownloadFlowPrompts, className: "flex-1 bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-opacity-75 transition-colors duration-200", disabled: loading || generatedScenes.length === 0 }, "Tải xuống Prompt Flow VEO 3.1 (.txt)")
+                  React.createElement("button", { onClick: handleDownloadFlowPrompts, className: "flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75 transition-colors duration-200", disabled: loading || generatedScenes.length === 0 }, "Tải xuống Prompt Flow VEO 3.1 (.txt)")
                 ),
                 generatedScenes.map((scene, index) => React.createElement(SceneCard, { key: index, scene: scene, sceneNumber: index + 1 }))
               )

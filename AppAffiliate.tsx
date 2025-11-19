@@ -68,7 +68,7 @@ const SingleImageUploader = ({ label, uploadedImage, setUploadedImage, isGenerat
       React.createElement('div', {className: 'flex flex-col items-center'},
         React.createElement('h3', { className: "text-md font-semibold text-slate-300 mb-2" }, label),
         React.createElement('div', { 
-          className: "w-full aspect-square bg-slate-800 border-2 border-dashed border-slate-600 rounded-lg flex items-center justify-center cursor-pointer hover:bg-slate-700 transition relative group",
+          className: `w-full aspect-square bg-slate-800 border-2 border-dashed border-slate-600 rounded-lg flex items-center justify-center transition relative group ${isGenerating ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-slate-700'}`,
           onClick: () => !isGenerating && fileInputRef.current?.click()
         },
           React.createElement('input', { 
@@ -161,7 +161,7 @@ const GeneratedContent = ({ image, promptSets, isLoading }) => {
                     React.createElement('img', { src: image, alt: "Generated content", className: "w-full object-contain rounded-lg shadow-lg" }),
                     React.createElement('div', { className: "bg-slate-900/50 p-4 rounded-lg border border-slate-700/50 space-y-3" },
                         React.createElement('div', null,
-                            React.createElement('h4', { className: "font-semibold text-yellow-400 flex items-center gap-2" }, React.createElement(SparklesIcon), " Lời thoại"),
+                            React.createElement('h4', { className: "font-semibold text-blue-400 flex items-center gap-2" }, React.createElement(SparklesIcon), " Lời thoại"),
                             React.createElement('p', { className: "text-slate-300 mt-2 text-sm md:text-base" }, promptSet.description)
                         ),
                         promptSet.animationPrompt && (() => {
@@ -169,7 +169,7 @@ const GeneratedContent = ({ image, promptSets, isLoading }) => {
                             return (
                                 React.createElement('div', null,
                                     React.createElement('div', { className: "flex justify-between items-center mb-2" },
-                                        React.createElement('h4', { className: "font-semibold text-amber-400 flex items-center gap-2" }, React.createElement(FilmIcon), " Prompt Chuyển động"),
+                                        React.createElement('h4', { className: "font-semibold text-purple-400 flex items-center gap-2" }, React.createElement(FilmIcon), " Prompt Chuyển động"),
                                         React.createElement('button', {
                                             onClick: () => handleCopy(formattedPrompt),
                                             className: "flex items-center gap-1.5 px-3 py-1 text-xs bg-slate-700 text-slate-300 rounded-lg border-b-2 border-slate-800 hover:bg-slate-600 transition-all transform active:translate-y-0.5 disabled:bg-green-600 disabled:border-green-800 disabled:text-white",
@@ -406,8 +406,8 @@ const OptionGroup = ({ label, children }) => (
 const OptionButton = ({ selected, onClick, children }) => (
     React.createElement('button', {
         onClick: onClick,
-        className: `px-6 py-3 text-lg rounded-lg font-semibold tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-yellow-500 transform active:translate-y-0.5 ${selected
-            ? 'bg-amber-600 text-white border-b-4 border-amber-800 shadow-xl'
+        className: `px-6 py-3 text-lg rounded-lg font-semibold tracking-wide transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-blue-500 transform active:translate-y-0.5 ${selected
+            ? 'bg-blue-600 text-white border-b-4 border-blue-800 shadow-xl'
             : 'bg-slate-700 text-slate-300 border-b-4 border-slate-800 hover:bg-slate-600 shadow-lg'
             }`
     },
@@ -429,10 +429,10 @@ const AspectRatioSelector = ({ selectedRatio, onSelect, disabled }) => {
                 disabled: disabled,
                 className: `px-4 py-2 text-sm rounded-md font-semibold transition-all flex-1 ${
                     selectedRatio === ratio.id && !disabled
-                        ? 'bg-amber-600 text-white'
+                        ? 'bg-blue-600 text-white'
                         : 'bg-slate-700 hover:bg-slate-600 text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed'
                 }`
-            }))
+            }, ratio.label))
         )
     );
 };
@@ -449,7 +449,8 @@ const ControlPanel = ({
     setModelImage, setProductImage,
     handleGenerateContent,
     modelImage, productImage, isLoading,
-    aspectRatio, setAspectRatio
+    aspectRatio, setAspectRatio,
+    isGpt
 }) => {
      const outfitInputProps = {
         type: "text",
@@ -458,7 +459,7 @@ const ControlPanel = ({
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => setOutfitSuggestion(e.target.value),
         disabled: generationMode === 'fashion',
         placeholder: generationMode === 'fashion' ? 'AI sẽ tự động phối đồ phụ & phụ kiện' : 'Ví dụ: áo khoác jean, quần tây công sở...',
-        className: "w-full bg-slate-900/70 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors disabled:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+        className: "w-full bg-slate-900/70 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
     };
     const backgroundInputProps = {
         type: "text",
@@ -466,7 +467,7 @@ const ControlPanel = ({
         value: backgroundSuggestion,
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => setBackgroundSuggestion(e.target.value),
         placeholder: generationMode === 'fashion' ? 'Ví dụ: đường phố Paris, tuần lễ thời trang...' : 'Ví dụ: studio tối giản, quầy bếp sang trọng...',
-        className: "w-full bg-slate-900/70 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors"
+        className: "w-full bg-slate-900/70 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
     };
     const productInfoTextareaProps = {
         id: "product-info",
@@ -474,7 +475,7 @@ const ControlPanel = ({
         onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => setProductInfo(e.target.value),
         placeholder: generationMode === 'fashion' ? 'Ví dụ: Áo sơ mi lụa, chất liệu thoáng mát, chống nhăn...' : 'Ví dụ: Son môi siêu lì, giữ màu 8 tiếng, vitamin E...',
         rows: 6,
-        className: "w-full bg-slate-900/70 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors resize-y"
+        className: "w-full bg-slate-900/70 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors resize-y"
     };
 
     return (
@@ -513,6 +514,7 @@ const ControlPanel = ({
                 React.createElement('textarea', productInfoTextareaProps)
             ),
             React.createElement('div', null,
+                isGpt && React.createElement('p', { className: "text-xs text-center text-yellow-400 p-2 bg-yellow-900/50 rounded-md mb-2" }, "Tính năng upload và ghép ảnh chỉ hỗ trợ model Gemini."),
                 React.createElement(AspectRatioSelector, {
                     selectedRatio: aspectRatio,
                     onSelect: setAspectRatio,
@@ -524,14 +526,14 @@ const ControlPanel = ({
                         label: "1. Tải ảnh khuôn mặt", 
                         uploadedImage: modelImage,
                         setUploadedImage: setModelImage, 
-                        isGenerating: isLoading,
+                        isGenerating: isLoading || isGpt,
                         placeholderText: "Upload ảnh"
                     }),
                     React.createElement(SingleImageUploader, { 
                         label: generationMode === 'product' ? "2. Tải ảnh sản phẩm" : "2. Tải ảnh trang phục (áo/quần)", 
                         uploadedImage: productImage,
                         setUploadedImage: setProductImage,
-                        isGenerating: isLoading,
+                        isGenerating: isLoading || isGpt,
                         placeholderText: "Upload ảnh"
                     })
                 )
@@ -541,7 +543,7 @@ const ControlPanel = ({
                     id: "generate-button",
                     onClick: handleGenerateContent,
                     disabled: isLoading || (!modelImage && !productImage && !productInfo.trim()),
-                    className: "w-full md:w-auto flex items-center justify-center gap-3 px-8 py-3 bg-amber-600 text-white font-bold rounded-lg shadow-lg border-b-4 border-amber-800 hover:bg-amber-700 disabled:bg-slate-600 disabled:border-slate-700 disabled:cursor-not-allowed transition-all transform active:translate-y-1 disabled:transform-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-yellow-500"
+                    className: "w-full md:w-auto flex items-center justify-center gap-3 px-8 py-3 bg-blue-600 text-white font-bold rounded-lg shadow-lg border-b-4 border-blue-800 hover:bg-blue-700 disabled:bg-slate-600 disabled:border-slate-700 disabled:cursor-not-allowed transition-all transform active:translate-y-1 disabled:transform-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-blue-500"
                 },
                     isLoading ? (
                         React.createElement('div', { className: "w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin" })
@@ -555,7 +557,7 @@ const ControlPanel = ({
     );
 };
 
-const AppAffiliate = ({ apiKey }) => {
+const AppAffiliate = ({ geminiApiKey, openaiApiKey, selectedAIModel }) => {
     const [modelImage, setModelImage] = useState<UploadedImage | null>(null);
     const [productImage, setProductImage] = useState<UploadedImage | null>(null);
     const [results, setResults] = useState([]);
@@ -569,6 +571,8 @@ const AppAffiliate = ({ apiKey }) => {
     const [backgroundSuggestion, setBackgroundSuggestion] = useState('');
     const [productInfo, setProductInfo] = useState('');
     const [aspectRatio, setAspectRatio] = useState('16:9');
+    
+    const isGpt = selectedAIModel === 'gpt';
 
     useEffect(() => {
         if (generationMode === 'fashion') {
@@ -577,19 +581,25 @@ const AppAffiliate = ({ apiKey }) => {
     }, [generationMode]);
 
     const handleGenerateContent = useCallback(async () => {
-        if (!apiKey) {
-            setError('Vui lòng cài đặt API Key trước khi tạo.');
-            return;
-        }
-        const ai = new window.GoogleGenAI({ apiKey });
-    
         setIsLoading(true);
         setError(null);
         setResults([]);
     
         // Image-based path
         if (modelImage && productImage) {
+            if (isGpt) {
+                setError('Tính năng ghép ảnh người mẫu và sản phẩm chỉ được hỗ trợ bởi Gemini. Vui lòng chọn model Gemini để sử dụng.');
+                setIsLoading(false);
+                return;
+            }
+            if (!geminiApiKey) {
+                setError('Vui lòng cài đặt API Key Gemini trước khi tạo.');
+                setIsLoading(false);
+                return;
+            }
+            
             try {
+                const ai = new window.GoogleGenAI({ apiKey: geminiApiKey });
                 const generatedResults = await generateAllContent(
                     ai,
                     modelImage.base64,
@@ -620,7 +630,7 @@ const AppAffiliate = ({ apiKey }) => {
                 setIsLoading(false);
             }
         } 
-        // Text-only path (new)
+        // Text-only path
         else if (!modelImage && !productImage) {
             if (!productInfo && !backgroundSuggestion && !outfitSuggestion) {
                 setError('Vui lòng nhập thông tin sản phẩm hoặc gợi ý để tạo ảnh từ văn bản.');
@@ -629,50 +639,91 @@ const AppAffiliate = ({ apiKey }) => {
             }
     
             try {
-                const textGenPromises = Array.from({ length: numberOfResults }, (_, i) => {
-                    const constructedPrompt = `
-                        Create a single, high-resolution, photorealistic promotional image.
-                        Style: high-end, polished, suitable for professional advertisement.
-                        Product information: ${productInfo || 'Not specified'}.
-                        Outfit suggestion: ${outfitSuggestion || 'Stylish and contextually appropriate'}.
-                        Background suggestion: ${backgroundSuggestion || 'Dynamic and interesting studio setting'}.
-                        A person should be featured interacting with the product naturally.
-                        The image must NOT contain any text.
-                        Seed: ${i}.
-                    `;
-                    return ai.models.generateImages({
-                        model: 'imagen-4.0-generate-001',
-                        prompt: constructedPrompt,
-                        config: {
-                            numberOfImages: 1,
-                            outputMimeType: 'image/png',
-                            aspectRatio: aspectRatio,
-                        },
-                    }).then(response => {
-                        if (!response.generatedImages?.[0]?.image?.imageBytes) {
-                            throw new Error(`Image generation failed for result ${i+1}.`);
-                        }
-                        const base64ImageBytes = response.generatedImages[0].image.imageBytes;
-                        const imageUrl = `data:image/png;base64,${base64ImageBytes}`;
-                        return {
-                            id: `result-text-${i}-${Date.now()}`,
-                            imageUrl: imageUrl,
-                            promptSets: [{ description: constructedPrompt, animationPrompt: null }]
-                        };
+                if(isGpt) {
+                    if (!openaiApiKey) {
+                        throw new Error('Vui lòng cài đặt API Key OpenAI trước khi tạo.');
+                    }
+                    const textGenPromises = Array.from({ length: numberOfResults }, (_, i) => {
+                        const constructedPrompt = `
+                            Create a single, high-resolution, photorealistic promotional image.
+                            Style: high-end, polished, suitable for professional advertisement.
+                            Product information: ${productInfo || 'Not specified'}.
+                            Outfit suggestion: ${outfitSuggestion || 'Stylish and contextually appropriate'}.
+                            Background suggestion: ${backgroundSuggestion || 'Dynamic and interesting studio setting'}.
+                            A person should be featured interacting with the product naturally.
+                            The image must NOT contain any text.
+                            Seed: ${i}.
+                        `;
+                        const sizeMap = { '16:9': '1792x1024', '9:16': '1024x1792', '1:1': '1024x1024' };
+                        
+                        return fetch('https://api.openai.com/v1/images/generations', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${openaiApiKey}` },
+                            body: JSON.stringify({
+                                model: 'dall-e-3', prompt: constructedPrompt, n: 1, size: sizeMap[aspectRatio] || '1024x1024',
+                                response_format: 'b64_json', quality: 'hd', style: 'vivid'
+                            })
+                        }).then(async response => {
+                            if (!response.ok) {
+                                const errorData = await response.json();
+                                throw new Error(`OpenAI DALL-E Error: ${errorData.error.message}`);
+                            }
+                            return response.json();
+                        }).then(data => {
+                            const imageUrl = `data:image/png;base64,${data.data[0].b64_json}`;
+                            return {
+                                id: `result-text-openai-${i}-${Date.now()}`,
+                                imageUrl: imageUrl,
+                                promptSets: [{ description: constructedPrompt, animationPrompt: null }]
+                            };
+                        });
                     });
-                });
-                
-                const generatedResults = await Promise.all(textGenPromises);
-                setResults(generatedResults);
-    
+                     const generatedResults = await Promise.all(textGenPromises);
+                     setResults(generatedResults);
+
+                } else { // Gemini text-only
+                     if (!geminiApiKey) {
+                        throw new Error('Vui lòng cài đặt API Key Gemini trước khi tạo.');
+                    }
+                    const ai = new window.GoogleGenAI({ apiKey: geminiApiKey });
+                    const textGenPromises = Array.from({ length: numberOfResults }, (_, i) => {
+                        const constructedPrompt = `
+                            Create a single, high-resolution, photorealistic promotional image.
+                            Style: high-end, polished, suitable for professional advertisement.
+                            Product information: ${productInfo || 'Not specified'}.
+                            Outfit suggestion: ${outfitSuggestion || 'Stylish and contextually appropriate'}.
+                            Background suggestion: ${backgroundSuggestion || 'Dynamic and interesting studio setting'}.
+                            A person should be featured interacting with the product naturally.
+                            The image must NOT contain any text.
+                            Seed: ${i}.
+                        `;
+                        return ai.models.generateImages({
+                            model: 'imagen-4.0-generate-001',
+                            prompt: constructedPrompt,
+                            config: { numberOfImages: 1, outputMimeType: 'image/png', aspectRatio: aspectRatio },
+                        }).then(response => {
+                            if (!response.generatedImages?.[0]?.image?.imageBytes) {
+                                throw new Error(`Image generation failed for result ${i+1}.`);
+                            }
+                            const imageUrl = `data:image/png;base64,${response.generatedImages[0].image.imageBytes}`;
+                            return {
+                                id: `result-text-gemini-${i}-${Date.now()}`,
+                                imageUrl: imageUrl,
+                                promptSets: [{ description: constructedPrompt, animationPrompt: null }]
+                            };
+                        });
+                    });
+                    const generatedResults = await Promise.all(textGenPromises);
+                    setResults(generatedResults);
+                }
             } catch (err) {
                  let errorMessage = 'Đã xảy ra lỗi không xác định. Vui lòng thử lại.';
                  if (err instanceof Error) {
                      const msg = err.message.toLowerCase();
                      if (msg.includes('quota') || msg.includes('429') || msg.includes('resource_exhausted')) {
-                         errorMessage = `<strong>Lỗi: Đã vượt quá hạn ngạch sử dụng</strong><p class="mt-2">Bạn đã đạt đến giới hạn sử dụng của Gemini API. Hãy thử lại sau hoặc giảm số lượng kết quả.</p>`;
+                         errorMessage = `<strong>Lỗi: Đã vượt quá hạn ngạch sử dụng</strong><p class="mt-2">Bạn đã đạt đến giới hạn sử dụng của API. Hãy thử lại sau hoặc giảm số lượng kết quả.</p>`;
                      } else if (msg.includes('api key not valid') || msg.includes('400')) {
-                         errorMessage = '<strong>Lỗi API:</strong> API key không hợp lệ hoặc môi trường Google AI Studio chưa được cấu hình đúng.';
+                         errorMessage = '<strong>Lỗi API:</strong> API key không hợp lệ hoặc môi trường chưa được cấu hình đúng.';
                      } else {
                          errorMessage = `<strong>Đã xảy ra lỗi:</strong><pre class="mt-2 text-left whitespace-pre-wrap">${err.message}</pre>`;
                      }
@@ -687,7 +738,7 @@ const AppAffiliate = ({ apiKey }) => {
             setError('Vui lòng tải lên CẢ hai ảnh, hoặc không tải ảnh nào để tạo từ văn bản.');
             setIsLoading(false);
         }
-    }, [apiKey, modelImage, productImage, voice, region, numberOfResults, generationMode, outfitSuggestion, backgroundSuggestion, productInfo, aspectRatio]);
+    }, [geminiApiKey, openaiApiKey, selectedAIModel, modelImage, productImage, voice, region, numberOfResults, generationMode, outfitSuggestion, backgroundSuggestion, productInfo, aspectRatio]);
     
     
     const ResultsPanel = () => (
@@ -737,7 +788,8 @@ const AppAffiliate = ({ apiKey }) => {
         setModelImage, setProductImage,
         handleGenerateContent,
         modelImage, productImage, isLoading,
-        aspectRatio, setAspectRatio
+        aspectRatio, setAspectRatio,
+        isGpt
     };
 
     return (

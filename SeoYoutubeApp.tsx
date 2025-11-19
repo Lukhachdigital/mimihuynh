@@ -81,15 +81,16 @@ const generateTitlesWithGemini = async (description: string, apiKey: string, len
             lengthInstruction = `Các tiêu đề phải có độ dài từ ${min} đến ${max} ký tự`;
         }
     }
-    const currentYear = new Date().getFullYear();
-    const prompt = `Bạn là một chuyên gia SEO YouTube và bậc thầy sáng tạo nội dung với khả năng tạo ra các tiêu đề lan truyền.
-    Phân tích ngôn ngữ của mô tả video sau. Bằng chính ngôn ngữ đó và đảm bảo ngữ pháp hoàn toàn chính xác, hãy tạo ra 5 tiêu đề độc đáo, hấp dẫn.
+    
+    const prompt = `Bạn là một chuyên gia SEO YouTube và bậc thầy sáng tạo nội dung (Clickbait Expert) với khả năng tạo ra các tiêu đề lan truyền (Viral Titles).
+    Phân tích ngôn ngữ của mô tả video sau. Bằng chính ngôn ngữ đó và đảm bảo ngữ pháp hoàn toàn chính xác, hãy tạo ra 5 tiêu đề ĐỈNH CAO, cực kỳ thu hút.
     
     **YÊU CẦU QUAN TRỌNG:**
-    1.  **Sáng tạo & Độc đáo:** Đối với mỗi yêu cầu mới, ngay cả với cùng một đầu vào, bạn BẮT BUỘC phải tạo ra một bộ tiêu đề hoàn toàn mới và khác biệt. Tránh sử dụng các công thức lặp đi lặp lại. Mục tiêu của bạn là cung cấp những ý tưởng mới mẻ, độc đáo mỗi lần.
-    2.  **Tính thời sự:** Năm hiện tại là ${currentYear}. Đảm bảo tất cả nội dung đều phù hợp với hiện tại và tương lai, tránh đề cập đến các năm đã qua trừ khi có liên quan đến lịch sử của chủ đề.
-    3.  **Kỹ thuật:** Mỗi tiêu đề phải có một góc nhìn khác nhau, sử dụng các kỹ thuật tạo sự tò mò (curiosity gap), hứa hẹn lợi ích rõ ràng, hoặc đặt câu hỏi tu từ để tối đa hóa tỷ lệ nhấp chuột.
-    4.  **Độ dài:** ${lengthInstruction}.
+    1.  **Tối đa hóa sự tò mò (High Curiosity):** Tiêu đề phải tạo ra "khoảng trống tò mò" (curiosity gap) khiến người xem không thể không bấm vào. Sử dụng các từ ngữ mạnh (Power Words), gây sốc nhẹ, cảm xúc mạnh hoặc hứa hẹn một bí mật/giải pháp bất ngờ. Hook phải thật sắc bén.
+    2.  **Đa dạng & Sáng tạo (High Variance):** 5 tiêu đề phải có 5 góc nhìn/cấu trúc hoàn toàn khác nhau. TRÁNH lặp lại công thức. KHÔNG được giống với các lần tạo trước. Hãy suy nghĩ vượt khuôn khổ (Think outside the box).
+    3.  **Không sử dụng năm (No Year):** TUYỆT ĐỐI KHÔNG đưa năm cụ thể (ví dụ: 2024, 2025...) vào tiêu đề trừ khi mô tả video yêu cầu rõ ràng về báo cáo năm. Hãy tập trung vào giá trị cốt lõi để video luôn hợp thời (evergreen).
+    4.  **Kỹ thuật Hook:** Sử dụng câu hỏi tu từ, phủ định (Đừng làm X trước khi biết Y), con số cụ thể, hoặc sự so sánh đối lập để tăng CTR.
+    5.  **Độ dài:** ${lengthInstruction}.
 
     Mô tả video: "${description}"
 
@@ -99,6 +100,7 @@ const generateTitlesWithGemini = async (description: string, apiKey: string, len
         model: geminiModel,
         contents: prompt,
         config: {
+            temperature: 1.2, // Increase creativity and variance
             responseMimeType: "application/json",
             responseSchema: {
                 type: window.GenAIType.OBJECT,
@@ -133,7 +135,7 @@ const generateFullSEOContentWithGemini = async (description: string, title: stri
             'Dài': 'khoảng 220-300 từ'
         };
         const lengthInstruction = descStyle ? `Độ dài yêu cầu: ${styleMap[descStyle]}.` : 'Độ dài khoảng 160-220 từ.';
-        const currentYear = new Date().getFullYear();
+        
         const prompt = `Bạn là một chuyên gia SEO YouTube và chuyên gia sáng tạo nội dung. Phân tích ngôn ngữ của mô tả video và tiêu đề. Bằng chính ngôn ngữ đó và đảm bảo ngữ pháp hoàn toàn chính xác, hãy tạo ra nội dung SEO tối ưu.
 
         Mô tả video gốc: "${description}"
@@ -141,7 +143,7 @@ const generateFullSEOContentWithGemini = async (description: string, title: stri
 
         **YÊU CẦU QUAN TRỌNG:**
         1.  **Sáng tạo & Độc đáo:** Đối với mỗi yêu cầu mới, ngay cả với cùng một đầu vào, bạn BẮT BUỘC phải tạo ra một bộ mô tả và từ khóa hoàn toàn mới và khác biệt. Hãy tư duy sáng tạo để diễn đạt ý tưởng theo nhiều cách khác nhau.
-        2.  **Tính thời sự:** Năm hiện tại là ${currentYear}. Đảm bảo tất cả nội dung đều phù hợp với hiện tại và tương lai.
+        2.  **Tính bền vững (Evergreen):** Nội dung phải có giá trị lâu dài. TRÁNH đề cập đến năm cụ thể (như 2024, 2025) để video không bị lỗi thời, trừ khi chủ đề bắt buộc.
 
         **CẤU TRÚC NỘI DUNG:**
         1.  **Mô tả (Description):** Viết MỘT ĐOẠN VĂN mô tả chuẩn SEO, tự nhiên và liền mạch. ${lengthInstruction}
@@ -188,9 +190,9 @@ const generateFullSEOContentWithGemini = async (description: string, title: stri
 // OPENAI API SERVICE
 // =================================================================
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
-const openAiModel = 'gpt-4o';
+const openAiModel = 'gpt-5.1';
 
-const callOpenAI = async (apiKey: string, messages: object[]) => {
+const callOpenAI = async (apiKey: string, messages: object[], temperature: number = 0.7) => {
     const response = await fetch(OPENAI_API_URL, {
         method: 'POST',
         headers: {
@@ -201,7 +203,7 @@ const callOpenAI = async (apiKey: string, messages: object[]) => {
             model: openAiModel,
             messages: messages,
             response_format: { type: "json_object" },
-            temperature: 0.7,
+            temperature: temperature,
         })
     });
 
@@ -229,15 +231,17 @@ const generateTitlesWithOpenAI = async (description: string, apiKey: string, len
             lengthInstruction = `Các tiêu đề phải có độ dài từ ${min} đến ${max} ký tự`;
         }
     }
-    const currentYear = new Date().getFullYear();
-    const systemPrompt = `Bạn là một chuyên gia SEO YouTube và bậc thầy sáng tạo nội dung với khả năng tạo ra các tiêu đề lan truyền.
-    Nhiệm vụ của bạn là phân tích ngôn ngữ của mô tả video do người dùng cung cấp. Bằng chính ngôn ngữ đó và đảm bảo ngữ pháp hoàn toàn chính xác, hãy tạo ra 5 tiêu đề độc đáo, hấp dẫn.
+    
+    const systemPrompt = `Bạn là một chuyên gia SEO YouTube và bậc thầy sáng tạo nội dung (Clickbait Expert) với khả năng tạo ra các tiêu đề lan truyền (Viral Titles).
+    Nhiệm vụ của bạn là phân tích ngôn ngữ của mô tả video do người dùng cung cấp. Bằng chính ngôn ngữ đó và đảm bảo ngữ pháp hoàn toàn chính xác, hãy tạo ra 5 tiêu đề ĐỈNH CAO, cực kỳ thu hút.
     **YÊU CẦU QUAN TRỌNG:**
-    1.  **Sáng tạo & Độc đáo:** Đối với mỗi yêu cầu mới, ngay cả với cùng một đầu vào, bạn BẮT BUỘC phải tạo ra một bộ tiêu đề hoàn toàn mới và khác biệt. Tránh sử dụng các công thức lặp đi lặp lại. Mục tiêu của bạn là cung cấp những ý tưởng mới mẻ, độc đáo mỗi lần.
-    2.  **Tính thời sự:** Năm hiện tại là ${currentYear}. Đảm bảo tất cả nội dung đều phù hợp với hiện tại và tương lai, tránh đề cập đến các năm đã qua trừ khi có liên quan đến lịch sử của chủ đề.
-    3.  **Kỹ thuật:** Mỗi tiêu đề phải có một góc nhìn khác nhau, sử dụng các kỹ thuật tạo sự tò mò (curiosity gap), hứa hẹn lợi ích rõ ràng, hoặc đặt câu hỏi tu từ để tối đa hóa tỷ lệ nhấp chuột.
-    4.  **Độ dài:** ${lengthInstruction}.
+    1.  **Tối đa hóa sự tò mò (High Curiosity):** Tiêu đề phải tạo ra "khoảng trống tò mò" (curiosity gap) khiến người xem không thể không bấm vào. Sử dụng các từ ngữ mạnh (Power Words), gây sốc nhẹ, cảm xúc mạnh hoặc hứa hẹn một bí mật/giải pháp bất ngờ.
+    2.  **Đa dạng & Sáng tạo (High Variance):** 5 tiêu đề phải có 5 góc nhìn/cấu trúc hoàn toàn khác nhau. TRÁNH lặp lại công thức. KHÔNG được giống với các lần tạo trước.
+    3.  **Không sử dụng năm (No Year):** TUYỆT ĐỐI KHÔNG đưa năm cụ thể (ví dụ: 2024, 2025...) vào tiêu đề trừ khi mô tả video yêu cầu rõ ràng về báo cáo năm. Hãy tập trung vào giá trị cốt lõi để video luôn hợp thời (evergreen).
+    4.  **Kỹ thuật Hook:** Sử dụng câu hỏi tu từ, phủ định (Đừng làm X trước khi biết Y), con số cụ thể, hoặc sự so sánh đối lập để tăng CTR.
+    5.  **Độ dài:** ${lengthInstruction}.
     Trả về kết quả dưới dạng một đối tượng JSON có một khóa duy nhất là "titles", chứa một mảng gồm 5 chuỗi tiêu đề.`;
+    
     const userPrompt = `Mô tả video: "${description}"`;
 
     const messages = [
@@ -246,7 +250,8 @@ const generateTitlesWithOpenAI = async (description: string, apiKey: string, len
     ];
 
     try {
-        const result = await callOpenAI(apiKey, messages);
+        // Use high temperature for titles to ensure uniqueness and creativity
+        const result = await callOpenAI(apiKey, messages, 1.0);
         return result.titles || [];
     } catch (error) {
         console.error("Error generating titles with OpenAI:", error);
@@ -262,12 +267,12 @@ const generateFullSEOContentWithOpenAI = async (description: string, title: stri
         'Dài': 'khoảng 220-300 từ'
     };
     const lengthInstruction = descStyle ? `Độ dài yêu cầu: ${styleMap[descStyle]}.` : 'Độ dài khoảng 160-220 từ.';
-    const currentYear = new Date().getFullYear();
+    
     const systemPrompt = `Bạn là một chuyên gia SEO YouTube và chuyên gia sáng tạo nội dung. Dựa vào mô tả video và tiêu đề đã chọn, hãy tạo ra nội dung SEO tối ưu. Phân tích ngôn ngữ của đầu vào và trả lời bằng chính ngôn ngữ đó với ngữ pháp hoàn hảo.
     
     **YÊU CẦU QUAN TRỌNG:**
     1.  **Sáng tạo & Độc đáo:** Đối với mỗi yêu cầu mới, ngay cả với cùng một đầu vào, bạn BẮT BUỘC phải tạo ra một bộ mô tả và từ khóa hoàn toàn mới và khác biệt. Hãy tư duy sáng tạo để diễn đạt ý tưởng theo nhiều cách khác nhau.
-    2.  **Tính thời sự:** Năm hiện tại là ${currentYear}. Đảm bảo tất cả nội dung đều phù hợp với hiện tại và tương lai.
+    2.  **Tính bền vững (Evergreen):** Nội dung phải có giá trị lâu dài. TRÁNH đề cập đến năm cụ thể (như 2024, 2025) để video không bị lỗi thời, trừ khi chủ đề bắt buộc.
 
     **CẤU TRÚC NỘI DUNG:**
     1.  **description:** Viết MỘT ĐOẠN VĂN mô tả chuẩn SEO, tự nhiên và liền mạch. ${lengthInstruction}
@@ -290,7 +295,7 @@ const generateFullSEOContentWithOpenAI = async (description: string, title: stri
     ];
     
     try {
-        const result = await callOpenAI(apiKey, messages);
+        const result = await callOpenAI(apiKey, messages, 0.7);
         return result;
     } catch (error) {
         console.error("Error generating full SEO content with OpenAI:", error);
@@ -302,7 +307,7 @@ const generateFullSEOContentWithOpenAI = async (description: string, title: stri
 // MAIN APP COMPONENT
 // =================================================================
 
-const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
+const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey, selectedAIModel }) => {
   const [videoDescription, setVideoDescription] = useState('');
   const [suggestedTitles, setSuggestedTitles] = useState<string[]>([]);
   const [selectedTitle, setSelectedTitle] = useState<string | null>(null);
@@ -314,9 +319,13 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
   const [selectedDescStyle, setSelectedDescStyle] = useState<string | null>('Tiêu chuẩn');
   
   const handleGenerateTitles = useCallback(async () => {
-    if (!geminiApiKey && !openaiApiKey) {
-      setError('Vui lòng vào "Cài đặt API Key" để thêm key.');
+    if (selectedAIModel === 'gemini' && !geminiApiKey) {
+      setError('Vui lòng vào "Cài đặt API Key" để thêm key Gemini.');
       return;
+    }
+    if (selectedAIModel === 'gpt' && !openaiApiKey) {
+        setError('Vui lòng vào "Cài đặt API Key" để thêm key OpenAI.');
+        return;
     }
     if (!videoDescription.trim()) {
       setError('Vui lòng nhập mô tả video.');
@@ -328,16 +337,14 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
     setSelectedTitle(null);
     setSeoContent(null);
 
-    const lengthConstraint = selectedTitleLength; // Read from state
+    const lengthConstraint = selectedTitleLength;
 
     try {
       let titles;
-      if (geminiApiKey) {
+      if (selectedAIModel === 'gemini') {
         titles = await generateTitlesWithGemini(videoDescription, geminiApiKey, lengthConstraint);
-      } else if (openaiApiKey) {
-        titles = await generateTitlesWithOpenAI(videoDescription, openaiApiKey, lengthConstraint);
       } else {
-        throw new Error("Không có API key nào được cung cấp.");
+        titles = await generateTitlesWithOpenAI(videoDescription, openaiApiKey, lengthConstraint);
       }
       setSuggestedTitles(titles);
     } catch (err: any) {
@@ -345,11 +352,15 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
     } finally {
       setIsLoadingTitles(false);
     }
-  }, [videoDescription, geminiApiKey, openaiApiKey, selectedTitleLength]);
+  }, [videoDescription, geminiApiKey, openaiApiKey, selectedTitleLength, selectedAIModel]);
 
   const handleGenerateContent = useCallback(async (title: string) => {
-    if (!geminiApiKey && !openaiApiKey) {
-        setError('API Key không tìm thấy. Vui lòng nhập lại trong "Cài đặt API Key".');
+    if (selectedAIModel === 'gemini' && !geminiApiKey) {
+        setError('Vui lòng vào "Cài đặt API Key" để thêm key Gemini.');
+        return;
+    }
+    if (selectedAIModel === 'gpt' && !openaiApiKey) {
+        setError('Vui lòng vào "Cài đặt API Key" để thêm key OpenAI.');
         return;
     }
     setSelectedTitle(title);
@@ -357,16 +368,14 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
     setSeoContent(null);
     setError(null);
 
-    const descStyle = selectedDescStyle; // Read from state
+    const descStyle = selectedDescStyle;
 
     try {
       let content;
-      if (geminiApiKey) {
+      if (selectedAIModel === 'gemini') {
         content = await generateFullSEOContentWithGemini(videoDescription, title, geminiApiKey, descStyle);
-      } else if (openaiApiKey) {
-        content = await generateFullSEOContentWithOpenAI(videoDescription, title, openaiApiKey, descStyle);
       } else {
-        throw new Error("Không có API key nào được cung cấp.");
+        content = await generateFullSEOContentWithOpenAI(videoDescription, title, openaiApiKey, descStyle);
       }
       setSeoContent(content);
     } catch (err: any)
@@ -375,7 +384,7 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
     } finally {
       setIsLoadingContent(false);
     }
-  }, [videoDescription, geminiApiKey, openaiApiKey, selectedDescStyle]);
+  }, [videoDescription, geminiApiKey, openaiApiKey, selectedDescStyle, selectedAIModel]);
 
 
   const renderSEOContent = () => {
@@ -388,22 +397,22 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
 
     return React.createElement('div', { className: "space-y-6 animate-fade-in" },
       React.createElement('div', { className: "bg-gray-800 p-4 rounded-lg shadow-lg relative" },
-        React.createElement('h3', { className: "text-lg font-bold text-yellow-400 mb-2" }, "Tiêu đề đã chọn"),
+        React.createElement('h3', { className: "text-lg font-bold text-cyan-400 mb-2" }, "Tiêu đề đã chọn"),
         React.createElement('p', { className: "text-gray-200" }, selectedTitle),
         React.createElement(CopyButton, { textToCopy: selectedTitle })
       ),
       React.createElement('div', { className: "bg-gray-800 p-4 rounded-lg shadow-lg relative" },
-        React.createElement('h3', { className: "text-lg font-bold text-yellow-400 mb-2" }, "Mô tả"),
+        React.createElement('h3', { className: "text-lg font-bold text-cyan-400 mb-2" }, "Mô tả"),
         React.createElement('p', { className: "text-gray-300 whitespace-pre-wrap" }, descriptionText),
         React.createElement(CopyButton, { textToCopy: descriptionText })
       ),
       React.createElement('div', { className: "bg-gray-800 p-4 rounded-lg shadow-lg relative" },
-        React.createElement('h3', { className: "text-lg font-bold text-yellow-400 mb-2" }, "Hashtag"),
+        React.createElement('h3', { className: "text-lg font-bold text-cyan-400 mb-2" }, "Hashtag"),
         React.createElement('p', { className: "text-gray-300" }, hashtagsText),
         React.createElement(CopyButton, { textToCopy: hashtagsText })
       ),
       React.createElement('div', { className: "bg-gray-800 p-4 rounded-lg shadow-lg relative" },
-        React.createElement('h3', { className: "text-lg font-bold text-yellow-400 mb-2" }, "Từ khóa (Keywords)"),
+        React.createElement('h3', { className: "text-lg font-bold text-cyan-400 mb-2" }, "Từ khóa (Keywords)"),
         React.createElement('p', { className: "text-gray-300 leading-relaxed" }, keywordsText),
         React.createElement(CopyButton, { textToCopy: keywordsText })
       )
@@ -421,40 +430,40 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
             React.createElement('div', { className: "lg:col-span-2" },
               React.createElement('div', { className: "bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-2xl border border-gray-700 sticky top-8 space-y-6" },
                 React.createElement('div', null,
-                    React.createElement('label', { htmlFor: "description", className: "block text-lg font-semibold mb-2 text-yellow-300" }, "1. Nhập mô tả video"),
+                    React.createElement('label', { htmlFor: "description", className: "block text-lg font-semibold mb-2 text-cyan-300" }, "1. Nhập mô tả video"),
                     React.createElement('textarea', {
                     id: "description",
                     value: videoDescription,
                     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => setVideoDescription(e.target.value),
                     placeholder: "Ví dụ: Hướng Dẫn Cách Tạo Video Trên VEO 3.1 Không Giới Hạn Thời Lượng",
-                    className: "w-full h-28 p-3 bg-gray-900 border border-gray-600 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-colors"
+                    className: "w-full h-28 p-3 bg-gray-900 border border-gray-600 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-colors"
                     })
                 ),
                 React.createElement('div', { className: "space-y-3" },
-                  React.createElement('h3', { className: "text-md font-semibold text-yellow-300" }, "2. Tùy chỉnh Tiêu đề"),
+                  React.createElement('h3', { className: "text-md font-semibold text-cyan-300" }, "2. Tùy chỉnh Tiêu đề"),
                   React.createElement('div', { className: "grid grid-cols-3 gap-2" },
                       titleLengthOptions.map(opt => React.createElement('button', {
                           key: opt,
                           onClick: () => setSelectedTitleLength(opt),
                           disabled: isLoadingTitles,
-                          className: `px-2 py-2 text-xs rounded-md transition-colors ${selectedTitleLength === opt ? 'bg-amber-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-200'}`
+                          className: `px-2 py-2 text-xs rounded-md transition-colors ${selectedTitleLength === opt ? 'bg-blue-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-200'}`
                       }, opt))
                   )
                 ),
                 React.createElement('div', { className: "space-y-3" },
-                  React.createElement('h3', { className: "text-md font-semibold text-yellow-300" }, "3. Tùy chỉnh Mô tả"),
+                  React.createElement('h3', { className: "text-md font-semibold text-cyan-300" }, "3. Tùy chỉnh Mô tả"),
                    React.createElement('div', { className: "grid grid-cols-2 gap-2" },
                       descStyleOptions.map(style => React.createElement('button', {
                           key: style,
                           onClick: () => setSelectedDescStyle(style),
-                          className: `px-3 py-2 text-sm rounded-md transition-colors ${selectedDescStyle === style ? 'bg-amber-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-200'}`
+                          className: `px-3 py-2 text-sm rounded-md transition-colors ${selectedDescStyle === style ? 'bg-blue-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-200'}`
                       }, style))
                   )
                 ),
                 React.createElement('button', {
                   onClick: handleGenerateTitles,
-                  disabled: isLoadingTitles || (!geminiApiKey && !openaiApiKey),
-                  className: "w-full flex justify-center items-center gap-2 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-900 font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled: isLoadingTitles,
+                  className: "w-full flex justify-center items-center gap-2 bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 },
                   isLoadingTitles ? React.createElement(LoadingSpinner, null) : React.createElement('i', { className: "fas fa-magic" }),
                   isLoadingTitles ? 'Đang tạo tiêu đề...' : '4. Tạo Gợi Ý Tiêu đề'
@@ -466,7 +475,7 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
               error && React.createElement('div', { className: "p-3 bg-red-900/50 border border-red-700 text-red-300 rounded-lg text-center" }, error),
               suggestedTitles.length > 0 && (
                 React.createElement('div', { className: "bg-gray-800/50 backdrop-blur-sm p-6 rounded-xl shadow-2xl border border-gray-700" },
-                  React.createElement('h2', { className: "text-xl font-semibold mb-4 text-yellow-300" }, "5. Chọn một tiêu đề"),
+                  React.createElement('h2', { className: "text-xl font-semibold mb-4 text-cyan-300" }, "5. Chọn một tiêu đề"),
                   React.createElement('div', { className: "space-y-3" },
                     suggestedTitles.map((title, index) => (
                       React.createElement('div', { key: index, className: "flex items-center justify-between bg-gray-900 p-3 rounded-md border border-gray-700" },
@@ -474,7 +483,7 @@ const SeoYoutubeApp = ({ geminiApiKey, openaiApiKey }) => {
                         React.createElement('button', {
                           onClick: () => handleGenerateContent(title),
                           disabled: isLoadingContent,
-                          className: "flex-shrink-0 bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:bg-gray-500"
+                          className: "flex-shrink-0 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded-md transition-colors disabled:bg-gray-500"
                         }, 'Chọn')
                       )
                     ))
