@@ -511,7 +511,7 @@ const App = () => {
     const OPENROUTER_API_KEY = 'OPENROUTER_API_KEY';
 
     const allTools = [
-        { id: 'dashboard', text: 'Bảng điều khiển', title: 'MIMI AI Academy - Bộ Công Cụ Sáng Tạo Tối Thượng', icon: React.createElement(IconDashboard), description: 'Tổng quan các công cụ sáng tạo' },
+        { id: 'dashboard', text: 'Bảng điều khiển', title: 'AICreators - Bộ Công Cụ Sáng Tạo Tối Thượng', icon: React.createElement(IconDashboard), description: 'Tổng quan các công cụ sáng tạo' },
         { id: 'prompt_json', text: 'Prompt JSON', title: 'Viết kịch bản và xuất Prompt chuẩn JSON', icon: React.createElement(IconPromptJson), description: 'Tự động tạo kịch bản video và chuỗi Prompt JSON tương ứng thích hợp tạo video.' },
         { id: 'whisk_flow', text: 'Whisk & Flow I', title: 'Prompt chuẩn hóa Whisk & Flow', icon: React.createElement(IconWhiskFlow), description: 'Tạo kịch bản và prompt, đảm bảo nhân vật giữ nguyên khuôn mặt và trang phục trong suốt video.' },
         { id: 'my_channel', text: 'Whisk & Flow II', title: 'Kịch bản & Xuất Prompt Whisk & Flow', icon: React.createElement(IconConsistentFlow), description: 'Tạo kịch bản và prompt, giữ nguyên khuôn mặt nhưng linh hoạt thay đổi trang phục nhân vật theo từng cảnh.' },
@@ -668,6 +668,16 @@ const App = () => {
         className: "flex items-center bg-slate-800/60 backdrop-blur-sm border border-cyan-500 text-cyan-300 font-semibold px-4 py-2 rounded-lg shadow-lg shadow-cyan-500/10 hover:bg-cyan-500/20 hover:text-cyan-200 hover:shadow-cyan-500/30 transition-all duration-300 transform hover:-translate-y-1"
     };
     
+    const getModelLabel = (model) => {
+        switch(model) {
+            case 'auto': return 'Tự động (Mặc định)';
+            case 'gemini': return 'Gemini';
+            case 'openai': return 'OpenAI';
+            case 'openrouter': return 'OpenRouter';
+            default: return model;
+        }
+    }
+
     return (
         React.createElement(React.Fragment, null,
             showApiKeyModal && React.createElement(ApiKeyModal, { 
@@ -703,18 +713,21 @@ const App = () => {
                             React.createElement('span', { className: "text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500" }, currentTool && currentView !== 'dashboard' ? currentTool.title : mainTitle)
                          ),
                          React.createElement('p', { className: "text-cyan-400 mt-1 text-lg sm:text-xl" }, currentTool && currentView !== 'dashboard' ? currentTool.description : mainDescription),
-                         currentView !== 'dashboard' && React.createElement('div', { className: "flex justify-center gap-4 mt-4 flex-wrap" },
-                            ['auto', 'gemini', 'openai', 'openrouter'].map((model) => (
-                                React.createElement('button', {
-                                    key: model,
-                                    onClick: () => setSelectedAIModel(model),
-                                    className: `px-6 py-2 rounded-lg font-bold text-sm transition-all shadow-md border transform hover:scale-105 ${
-                                        selectedAIModel === model 
-                                        ? 'bg-cyan-600 text-white border-cyan-400 shadow-cyan-500/50' 
-                                        : 'bg-slate-800 text-slate-400 border-slate-600 hover:bg-slate-700 hover:text-white'
-                                    }`
-                                }, model === 'auto' ? 'Tự động (Mặc định)' : model.charAt(0).toUpperCase() + model.slice(1))
-                            ))
+                         currentView !== 'dashboard' && React.createElement(React.Fragment, null, 
+                            React.createElement('div', { className: "flex justify-center gap-4 mt-4 flex-wrap" },
+                                ['auto', 'gemini', 'openai', 'openrouter'].map((model) => (
+                                    React.createElement('button', {
+                                        key: model,
+                                        onClick: () => setSelectedAIModel(model),
+                                        className: `px-6 py-2 rounded-lg font-bold text-sm transition-all shadow-md border transform hover:scale-105 ${
+                                            selectedAIModel === model 
+                                            ? 'bg-cyan-600 text-white border-cyan-400 shadow-cyan-500/50' 
+                                            : 'bg-slate-800 text-slate-400 border-slate-600 hover:bg-slate-700 hover:text-white'
+                                        }`
+                                    }, getModelLabel(model))
+                                ))
+                            ),
+                            React.createElement('p', { className: "text-yellow-400 font-bold mt-2 text-center text-sm animate-pulse" }, "Lưu ý! Chọn mô hình AI thích hợp đề có kết quả tốt nhất")
                         )
                     ),
                      (() => {
@@ -786,7 +799,7 @@ const App = () => {
                     )
                 ),
                  React.createElement('footer', { className: "text-center p-4" },
-                    React.createElement('p', { className: "text-base text-yellow-400 font-semibold tracking-wide" }, "Ứng dụng được phát triển bởi MIMI Huỳnh - Academy")
+                    React.createElement('p', { className: "text-base text-yellow-400 font-semibold tracking-wide" }, "Ứng dụng được phát triển bởi Mr. Huỳnh Xuyên Sơn")
                 )
             )
         )
