@@ -799,7 +799,7 @@ const App = () => {
                     )
                 ),
                  React.createElement('footer', { className: "text-center p-4" },
-                    React.createElement('p', { className: "text-base text-yellow-400 font-semibold tracking-wide" }, "Ứng dụng được phát triển bởi Mr. Huỳnh Xuyên Sơn")
+                    React.createElement('p', { className: "text-base text-yellow-400 font-semibold tracking-wide" }, "Ứng dụng được phát triển bởi MiMi Huỳnh AI - Academy")
                 )
             )
         )
