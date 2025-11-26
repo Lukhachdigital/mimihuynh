@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenAI, Type, Modality } from "@google/genai";
 
@@ -134,11 +135,15 @@ const ImageUploader = ({ uploadedImage, setUploadedImage, disabled, label }: { u
     };
     
     return (
-        <div className="flex flex-col items-center w-full h-full">
+        <div className="flex flex-col items-center w-full">
+          {label && (
+            <label className="block text-sm font-medium text-gray-300 mb-2 text-center w-full truncate" title={label}>
+                {label}
+            </label>
+          )}
           <div 
-            className={`w-full h-full min-h-[100px] bg-slate-800 border-2 border-dashed border-slate-600 rounded-lg flex items-center justify-center transition relative group ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-slate-700'}`}
+            className={`w-full aspect-square bg-slate-800 border-2 border-dashed border-slate-600 rounded-lg flex items-center justify-center transition relative group ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-slate-700 hover:border-slate-500'}`}
             onClick={() => !disabled && fileInputRef.current?.click()}
-            title={label}
           >
             <input 
               type="file" 
@@ -149,24 +154,26 @@ const ImageUploader = ({ uploadedImage, setUploadedImage, disabled, label }: { u
               disabled={disabled}
             />
             {uploadedImage ? (
-              <>
+              <React.Fragment>
                 <img src={uploadedImage.dataUrl} alt="Uploaded preview" className="w-full h-full object-cover rounded-lg" />
                 <button
                     onClick={(e) => { e.stopPropagation(); setUploadedImage(null); }}
                     className="absolute top-1 right-1 bg-red-600/80 hover:bg-red-600 text-white rounded-full p-1 shadow-md transition-opacity opacity-0 group-hover:opacity-100 focus:opacity-100"
                     disabled={disabled}
+                    title="Xóa ảnh"
+                    type="button"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                     </svg>
                 </button>
-              </>
+              </React.Fragment>
             ) : (
               <div className="text-center text-gray-400 p-2">
-                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mx-auto mb-1 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mx-auto mb-2 text-gray-500 group-hover:text-gray-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                  </svg>
-                <p className="text-[10px] leading-tight">Ảnh mẫu</p>
+                <p className="text-xs font-medium text-gray-400 group-hover:text-gray-300">Tải ảnh lên</p>
               </div>
             )}
           </div>
@@ -197,14 +204,19 @@ const responseSchema = {
   required: ["title", "article", "engagementCall"],
 };
 
-const getSystemInstruction = (length: ArticleLength) => {
+const getSystemInstruction = (length: ArticleLength, seed: number) => {
+    // Đã giảm 40% số lượng ký tự so với bản cũ
     const lengthInstruction = length === 'short'
-    ? 'TUYỆT ĐỐI QUAN TRỌNG: Tổng độ dài của bài viết (article) PHẢI nằm trong khoảng 2000 đến 3000 ký tự (khoảng 400-600 từ). Hãy viết nội dung cô đọng, súc tích, tập trung vào các ý chính quan trọng nhất. Không được viết ngắn hơn 2000 ký tự và không được dài hơn 3000 ký tự. Đây là yêu cầu bắt buộc.'
-    : 'TUYỆT ĐỐI QUAN TRỌNG: Tổng độ dài của bài viết (article) PHẢI đạt tối thiểu 12000 ký tự (khoảng 2400 từ trở lên). Hãy viết cực kỳ chi tiết, mở rộng mọi khía cạnh, sử dụng nhiều ví dụ minh họa, câu chuyện kể và phân tích đa chiều. Chia bài viết thành nhiều phần lớn nhỏ rõ ràng. Nếu không đủ ý để đạt 12000 ký tự, hãy mở rộng thêm các góc nhìn liên quan. Đây là yêu cầu bắt buộc.';
+    ? 'TUYỆT ĐỐI QUAN TRỌNG: Tổng độ dài của bài viết (article) PHẢI nằm trong khoảng 1200 đến 1800 ký tự (khoảng 240-360 từ). Hãy viết nội dung cô đọng, súc tích, tập trung vào các ý chính quan trọng nhất. Không được viết ngắn hơn 1200 ký tự và không được dài hơn 1800 ký tự. Đây là yêu cầu bắt buộc.'
+    : 'TUYỆT ĐỐI QUAN TRỌNG: Tổng độ dài của bài viết (article) PHẢI đạt tối thiểu 7200 ký tự (khoảng 1440 từ trở lên). Hãy viết cực kỳ chi tiết, mở rộng mọi khía cạnh, sử dụng nhiều ví dụ minh họa, câu chuyện kể và phân tích đa chiều. Chia bài viết thành nhiều phần lớn nhỏ rõ ràng. Nếu không đủ ý để đạt 7200 ký tự, hãy mở rộng thêm các góc nhìn liên quan. Đây là yêu cầu bắt buộc.';
 
     return `Bạn là một chuyên gia viết lách đa tài, có khả năng hóa thân vào nhiều vai trò khác nhau (nhà tâm lý, chuyên gia kinh tế, nhà giáo dục, thiền sư, v.v.) tùy thuộc vào lĩnh vực được yêu cầu.
 
-**NHIỆM VỤ:** Dựa vào **"CHỦ ĐỀ MỚI CẦN VIẾT"** và **"LĨNH VỰC / GÓC NHÌN"** do người dùng cung cấp, hãy sáng tạo một bài viết hoàn toàn mới.
+**NHIỆM VỤ CỐT LÕI (ĐỘC NHẤT & SÁNG TẠO):**
+Đây là lần tạo thứ: ${seed}. BẠN BẮT BUỘC PHẢI TẠO RA MỘT BÀI VIẾT HOÀN TOÀN MỚI, KHÁC BIỆT SO VỚI TẤT CẢ CÁC LẦN TRƯỚC.
+- Ngay cả khi tiêu đề giống hệt lần trước, bạn PHẢI thay đổi hoàn toàn cách tiếp cận, giọng văn, cấu trúc và các ví dụ minh họa.
+- Đừng lặp lại những lối mòn tư duy cũ. Hãy tìm một góc nhìn mới lạ, độc đáo hoặc trái ngược để phân tích vấn đề.
+- Sự sáng tạo và tính mới mẻ là ưu tiên hàng đầu.
 
 **YÊU CẦU VỀ VĂN PHONG & NỘI DUNG:**
 *   **Bám sát Lĩnh vực:** 
@@ -226,17 +238,37 @@ const getSystemInstruction = (length: ArticleLength) => {
 Chỉ trả về JSON, không thêm bất kỳ lời giải thích nào.`;
 };
 
-const getUserContent = (topic: string, category: string) => `
+const getUserContent = (topic: string, category: string, seed: number, approach: string) => `
 **LĨNH VỰC / GÓC NHÌN:** ${category}
 **CHỦ ĐỀ MỚI CẦN VIẾT:** "${topic}"
+**GÓC TIẾP CẬN BẮT BUỘC CHO LẦN NÀY:** "${approach}"
+**MÃ NGẪU NHIÊN (Để tránh trùng lặp):** ${seed}
 
-Hãy viết bài dựa trên lĩnh vực và chủ đề trên.
+Hãy viết bài dựa trên lĩnh vực và chủ đề trên, TUÂN THỦ NGHIÊM NGẶT góc tiếp cận được chỉ định. Điều này giúp bài viết hoàn toàn khác biệt so với các lần trước.
 `;
 
 const generateContentWithFallback = async (topic: string, category: string, length: ArticleLength, geminiKey: string, openaiKey: string, openRouterKey: string, selectedModel: string): Promise<GeneratedContent> => {
-    const systemInstruction = getSystemInstruction(length);
-    const userContent = getUserContent(topic, category);
+    const seed = Date.now(); // Unique seed for every generation
+    
+    // Randomized creative approaches to force variety (Hidden from UI)
+    const approaches = [
+        "Kể một câu chuyện đầy cảm xúc hoặc trải nghiệm cá nhân liên quan đến chủ đề",
+        "Phân tích logic, khoa học, đi sâu vào nguyên nhân gốc rễ và giải pháp thực tế",
+        "Sử dụng giọng văn khiêu khích, đặt câu hỏi ngược để thách thức tư duy người đọc",
+        "Giọng văn tâm tình, nhẹ nhàng, chữa lành và đồng cảm sâu sắc",
+        "Phong cách thẳng thắn, bộc trực, 'tát nước vào mặt' để thức tỉnh (Tough Love)",
+        "Sử dụng phép ẩn dụ, hình tượng nghệ thuật để diễn giải vấn đề một cách bay bổng",
+        "Hài hước, châm biếm nhẹ nhàng nhưng thâm thúy",
+        "Tập trung vào các con số, dữ liệu hoặc các bước hành động cụ thể (Step-by-step)"
+    ];
+    const randomApproach = approaches[Math.floor(Math.random() * approaches.length)];
+
+    const systemInstruction = getSystemInstruction(length, seed);
+    const userContent = getUserContent(topic, category, seed, randomApproach);
     let finalError;
+
+    // High temperature for creativity/variance
+    const CREATIVE_TEMP = 1.1;
 
     // Priority: Gemini -> OpenAI -> OpenRouter
 
@@ -252,7 +284,7 @@ const generateContentWithFallback = async (topic: string, category: string, leng
                     systemInstruction: systemInstruction,
                     responseMimeType: "application/json",
                     responseSchema: responseSchema,
-                    temperature: 0.8,
+                    temperature: CREATIVE_TEMP,
                 },
             });
             return JSON.parse(response.text.trim());
@@ -274,7 +306,7 @@ const generateContentWithFallback = async (topic: string, category: string, leng
                     model: "gpt-4o",
                     messages: [{ role: "system", content: systemInstruction }, { role: "user", content: userContent }],
                     response_format: { type: "json_object" },
-                    temperature: 0.8,
+                    temperature: CREATIVE_TEMP,
                 }),
             });
             if (!response.ok) throw new Error('OpenAI failed');
@@ -298,7 +330,7 @@ const generateContentWithFallback = async (topic: string, category: string, leng
                     model: "google/gemini-2.0-flash-001",
                     messages: [{ role: "system", content: systemInstruction }, { role: "user", content: userContent }],
                     response_format: { type: "json_object" },
-                    temperature: 0.8,
+                    temperature: CREATIVE_TEMP,
                 }),
             });
             if (!response.ok) throw new Error('OpenRouter failed');
@@ -336,7 +368,7 @@ const ContentPodcastApp = ({ geminiApiKey, openaiApiKey, openRouterApiKey, selec
   const [copiedAll, setCopiedAll] = useState(false);
 
 
-  const generatePromptFromContent = async (content: GeneratedContent, apiKey: string, provider: 'gemini' | 'openrouter') => {
+  const generatePromptFromContent = async (content: GeneratedContent, apiKey: string, provider: 'gemini' | 'openrouter' | 'openai') => {
       setIsGeneratingPrompt(true);
       setImagePrompt('');
 
@@ -367,6 +399,17 @@ const ContentPodcastApp = ({ geminiApiKey, openaiApiKey, openRouterApiKey, selec
                   contents: promptRequest
               });
               setImagePrompt(response.text.trim());
+          } else if (provider === 'openai') {
+              const response = await fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+                body: JSON.stringify({
+                    model: "gpt-4o",
+                    messages: [{ role: "user", content: promptRequest }],
+                }),
+            });
+            const data = await response.json();
+            setImagePrompt(data.choices[0].message.content.trim());
           } else {
               const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                 method: "POST",
@@ -410,6 +453,8 @@ const ContentPodcastApp = ({ geminiApiKey, openaiApiKey, openRouterApiKey, selec
       // Auto-generate prompt based on best available or selected
       if ((selectedAIModel === 'gemini' || selectedAIModel === 'auto') && geminiApiKey) {
           generatePromptFromContent(result, geminiApiKey, 'gemini');
+      } else if ((selectedAIModel === 'openai' || selectedAIModel === 'auto') && openaiApiKey) {
+          generatePromptFromContent(result, openaiApiKey, 'openai');
       } else if ((selectedAIModel === 'openrouter' || selectedAIModel === 'auto') && openRouterApiKey) {
           generatePromptFromContent(result, openRouterApiKey, 'openrouter');
       }
@@ -482,7 +527,9 @@ const ContentPodcastApp = ({ geminiApiKey, openaiApiKey, openRouterApiKey, selec
       // CASE 2: No Reference Image -> Try Providers based on selection
       // ======================================================
       else {
-          // 1. Try Gemini (Imagen) - Priority 1
+          // 1. Try Gemini (Nano Banana) - Priority 1 (OpenRouter or Direct)
+          
+          // Direct Gemini (Imagen)
           if (!finalError && (selectedAIModel === 'gemini' || selectedAIModel === 'auto') && geminiApiKey) {
               try {
                   const ai = new window.GoogleGenAI({ apiKey: geminiApiKey });
@@ -534,24 +581,31 @@ const ContentPodcastApp = ({ geminiApiKey, openaiApiKey, openRouterApiKey, selec
               }
           }
 
-          // 3. Try OpenRouter - Priority 3
+          // 3. Try OpenRouter - Priority 3 (Using Nano Banana via Chat Completion)
           if (!finalError && (selectedAIModel === 'openrouter' || selectedAIModel === 'auto') && openRouterApiKey) {
               try {
-                  const response = await fetch('https://openrouter.ai/api/v1/images/generations', {
+                  const systemPromptImage = "You are an expert image generation assistant. Generate high-quality images based on the user request.";
+                  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${openRouterApiKey}` },
                       body: JSON.stringify({
-                          model: 'black-forest-labs/flux-1-schnell',
-                          prompt: imagePrompt,
-                          n: 1,
-                          size: '1024x576', 
+                          model: 'google/gemini-2.5-flash-image',
+                          messages: [
+                              { role: 'system', content: systemPromptImage },
+                              { role: 'user', content: imagePrompt }
+                          ]
                       })
                   });
+                  
                   if (response.ok) {
                       const data = await response.json();
-                      setGeneratedImageUrl(data.data[0].url);
-                      setIsGeneratingImage(false);
-                      return;
+                      const content = data.choices[0].message.content;
+                      const match = content.match(/!\[.*?\]\((https?:\/\/[^\)]+)\)/);
+                      if (match && match[1]) {
+                          setGeneratedImageUrl(match[1]);
+                          setIsGeneratingImage(false);
+                          return;
+                      }
                   }
               } catch (e) {
                   console.warn("OpenRouter Image Gen failed", e);
@@ -620,7 +674,7 @@ const ContentPodcastApp = ({ geminiApiKey, openaiApiKey, openRouterApiKey, selec
                       onSelect={(val) => setArticleLength(val as ArticleLength)} 
                    />
                    <p className="text-xs text-gray-500 mt-1">
-                     {articleLength === 'short' ? 'Khoảng 2000-3000 từ (phù hợp Tiktok - Facebook Reels - Youtube Shorts)' : 'Khoảng 12000+ từ (phù hợp Podcast Youtube dài)'}
+                     {articleLength === 'short' ? 'Khoảng 1200-1800 ký tự (phù hợp Tiktok - Facebook Reels - Youtube Shorts)' : 'Khoảng 7200+ ký tự (phù hợp Podcast Youtube dài)'}
                    </p>
                 </div>
 
@@ -680,21 +734,19 @@ const ContentPodcastApp = ({ geminiApiKey, openaiApiKey, openRouterApiKey, selec
                 )}
 
                 {/* Split Layout for Image Upload & Result */}
-                <div className="flex flex-row gap-4 mt-4 items-start">
+                <div className="flex flex-col sm:flex-row gap-4 mt-4 items-start">
                     {/* 1/4 Width for Upload */}
-                    <div className="w-1/4 flex-shrink-0">
-                        <div className="aspect-square">
-                            <ImageUploader 
-                                uploadedImage={referenceImage} 
-                                setUploadedImage={setReferenceImage} 
-                                disabled={isGeneratingImage} 
-                                label="Ảnh mẫu (Khuôn mặt)"
-                            />
-                        </div>
+                    <div className="w-full sm:w-1/4 flex-shrink-0">
+                        <ImageUploader 
+                            uploadedImage={referenceImage} 
+                            setUploadedImage={setReferenceImage} 
+                            disabled={isGeneratingImage} 
+                            label="Ảnh mẫu (Khuôn mặt)"
+                        />
                     </div>
                     
                     {/* 3/4 Width for Result */}
-                    <div className="w-3/4">
+                    <div className="w-full sm:w-3/4">
                         <div className={`w-full bg-black/30 border border-slate-700 rounded-lg relative overflow-hidden flex items-center justify-center group ${!generatedImageUrl ? 'min-h-[16rem]' : ''}`}>
                             {generatedImageUrl ? (
                                 <>

@@ -8,17 +8,28 @@ import { ScriptIcon } from './components/AIPromptVEO31/icons';
 interface AIPromptVEO31AppProps {
   geminiApiKey: string;
   openaiApiKey: string;
+  openRouterApiKey: string;
   selectedAIModel: string;
 }
 
-const AIPromptVEO31App: React.FC<AIPromptVEO31AppProps> = ({ geminiApiKey, openaiApiKey, selectedAIModel }) => {
-  // FIX: Updated the state type and initial value to include `apiType`, resolving a prop type mismatch with the InputForm component.
+const AIPromptVEO31App: React.FC<AIPromptVEO31AppProps> = ({ geminiApiKey, openaiApiKey, openRouterApiKey, selectedAIModel }) => {
+  // Determine initial API type based on selectedAIModel, defaulting to 'gemini' if available, else 'gpt'
+  const getInitialApiType = (): 'gemini' | 'gpt' | 'openrouter' => {
+      if (selectedAIModel === 'gemini') return 'gemini';
+      if (selectedAIModel === 'openai') return 'gpt';
+      if (selectedAIModel === 'openrouter') return 'openrouter';
+      // Auto fallback
+      if (geminiApiKey) return 'gemini';
+      if (openRouterApiKey) return 'openrouter';
+      return 'gpt';
+  };
+
   const [params, setParams] = useState<Omit<ScriptParams, 'apiKey' | 'numPrompts'>>({
     topic: '',
     videoStyle: 'Điện ảnh',
     dialogueLanguage: 'Không thoại',
     subtitles: false,
-    apiType: selectedAIModel as 'gemini' | 'gpt',
+    apiType: getInitialApiType(),
   });
   const [scriptData, setScriptData] = useState<ScriptResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -37,11 +48,36 @@ const AIPromptVEO31App: React.FC<AIPromptVEO31AppProps> = ({ geminiApiKey, opena
         return;
     }
 
+    let apiKey = '';
+    let currentApiType: 'gemini' | 'gpt' | 'openrouter' = 'gemini';
+
+    // 1. Determine API Type based on Global Selector
+    if (selectedAIModel === 'gemini') currentApiType = 'gemini';
+    else if (selectedAIModel === 'openai') currentApiType = 'gpt';
+    else if (selectedAIModel === 'openrouter') currentApiType = 'openrouter';
+    else {
+        // Auto Mode: Fallback logic
+        if (geminiApiKey) currentApiType = 'gemini';
+        else if (openRouterApiKey) currentApiType = 'openrouter';
+        else if (openaiApiKey) currentApiType = 'gpt';
+    }
+
+    // 2. Select Key based on determined Type
+    if (currentApiType === 'gemini') apiKey = geminiApiKey;
+    else if (currentApiType === 'openrouter') apiKey = openRouterApiKey;
+    else if (currentApiType === 'gpt') apiKey = openaiApiKey;
+
+    if (!apiKey) {
+        setError(`Vui lòng nhập API Key cho ${currentApiType === 'gpt' ? 'OpenAI' : currentApiType === 'gemini' ? 'Gemini' : 'OpenRouter'} hoặc chuyển sang chế độ Tự động.`);
+        setIsLoading(false);
+        return;
+    }
+
     try {
       const fullParams: ScriptParams = { 
         ...params, 
-        apiKey: selectedAIModel === 'gemini' ? geminiApiKey : openaiApiKey,
-        apiType: selectedAIModel as 'gemini' | 'gpt',
+        apiKey: apiKey,
+        apiType: currentApiType,
         numPrompts: userPrompts.length 
       };
       const response = await generateScript(fullParams);

@@ -149,7 +149,7 @@ const generateTitles = async (description: string, geminiKey: string, openaiKey:
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${openRouterKey}` },
                 body: JSON.stringify({
-                    model: 'google/gemini-2.0-flash-001',
+                    model: 'google/gemini-2.5-pro',
                     messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: 'Trả về kết quả dưới dạng một đối tượng JSON có một khóa duy nhất là "titles", chứa một mảng gồm 5 chuỗi tiêu đề.' }],
                     response_format: { type: 'json_object' }
                 })
@@ -256,7 +256,7 @@ const generateFullSEOContent = async (description: string, title: string, gemini
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${openRouterKey}` },
                 body: JSON.stringify({
-                    model: 'google/gemini-2.0-flash-001',
+                    model: 'google/gemini-2.5-pro',
                     messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: 'Hãy trả về kết quả dưới dạng một đối tượng JSON có cấu trúc chính xác như sau: { "description": "...", "hashtags": ["...", "..."], "primaryKeywords": ["...", "..."], "secondaryKeywords": ["...", "..."] }' }],
                     response_format: { type: 'json_object' }
                 })

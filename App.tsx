@@ -431,26 +431,29 @@ const ApiKeyModal = ({ onClose, onSave, initialGeminiKey, initialOpenAIKey, init
                 )
             ),
             React.createElement('div', { className: "p-6 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar" },
+                // 1. Gemini (Top)
                 React.createElement('div', {},
                     React.createElement('div', { className: "flex justify-between items-center mb-2" },
-                        React.createElement('label', { htmlFor: "openrouter-key", className: "block text-lg font-semibold text-slate-300" }, "OpenRouter API Key"),
-                        React.createElement('a', { href: APP_LINKS.OPENROUTER_API_KEY_GET, target: "_blank", rel: "noopener noreferrer", className: "text-sm text-cyan-400 hover:text-cyan-300 underline" }, "Lấy API Key")
-                    ),
-                    React.createElement('input', inputOpenRouterProps)
-                ),
-                React.createElement('div', {},
-                    React.createElement('div', { className: "flex justify-between items-center mb-2" },
-                        React.createElement('label', { htmlFor: "gemini-key", className: "block text-lg font-semibold text-slate-300" }, "Gemini API Key (Ưu tiên tạo ảnh)"),
+                        React.createElement('label', { htmlFor: "gemini-key", className: "block text-lg font-semibold text-slate-300" }, "Gemini API Key (Khuyến khích)"),
                         React.createElement('a', { href: APP_LINKS.GEMINI_API_KEY_GET, target: "_blank", rel: "noopener noreferrer", className: "text-sm text-cyan-400 hover:text-cyan-300 underline" }, "Lấy API Key")
                     ),
                     React.createElement('input', inputGeminiProps)
                 ),
+                // 2. OpenAI (Middle)
                 React.createElement('div', {},
                     React.createElement('div', { className: "flex justify-between items-center mb-2" },
                          React.createElement('label', { htmlFor: "openai-key", className: "block text-lg font-semibold text-slate-300" }, "OpenAI API Key"),
                          React.createElement('a', { href: APP_LINKS.OPENAI_API_KEY_GET, target: "_blank", rel: "noopener noreferrer", className: "text-sm text-cyan-400 hover:text-cyan-300 underline" }, "Lấy API Key")
                     ),
                     React.createElement('input', inputOpenAIProps)
+                ),
+                // 3. OpenRouter (Bottom)
+                React.createElement('div', {},
+                    React.createElement('div', { className: "flex justify-between items-center mb-2" },
+                        React.createElement('label', { htmlFor: "openrouter-key", className: "block text-lg font-semibold text-slate-300" }, "OpenRouter API Key"),
+                        React.createElement('a', { href: APP_LINKS.OPENROUTER_API_KEY_GET, target: "_blank", rel: "noopener noreferrer", className: "text-sm text-cyan-400 hover:text-cyan-300 underline" }, "Lấy API Key")
+                    ),
+                    React.createElement('input', inputOpenRouterProps)
                 ),
                 React.createElement('button', saveBtnProps, "Lưu Cài Đặt")
             )
@@ -598,14 +601,15 @@ const App = () => {
         const dashboardTools = sidebarTools.filter(tool => tool.id !== 'dashboard');
 
         const gridProps = {
-            className: 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'
+            // Update grid to have 5 columns on xl screens as requested
+            className: 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6'
         };
 
         return React.createElement('div', { ...gridProps } as any,
             dashboardTools.map(tool => {
                 const buttonProps: React.ButtonHTMLAttributes<HTMLButtonElement> = {
                     onClick: () => onToolClick(tool.id),
-                    className: "group bg-slate-800/50 border border-slate-700 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:bg-cyan-500/10 hover:border-cyan-500/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/20"
+                    className: "group bg-slate-800/50 border border-slate-700 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:bg-cyan-500/10 hover:border-cyan-500/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/20 h-full"
                 };
                 
                 return React.createElement('button', { key: tool.id, ...buttonProps } as any,
@@ -727,7 +731,7 @@ const App = () => {
                                     }, getModelLabel(model))
                                 ))
                             ),
-                            React.createElement('p', { className: "text-yellow-400 font-bold mt-2 text-center text-sm animate-pulse" }, "Lưu ý! Chọn mô hình AI thích hợp đề có kết quả tốt nhất")
+                            React.createElement('p', { className: "text-yellow-400 font-bold mt-2 text-center text-sm animate-pulse" }, "Lưu ý! Chọn mô hình AI thích hợp để có kết quả tốt nhất")
                         )
                     ),
                      (() => {
@@ -799,7 +803,7 @@ const App = () => {
                     )
                 ),
                  React.createElement('footer', { className: "text-center p-4" },
-                    React.createElement('p', { className: "text-base text-yellow-400 font-semibold tracking-wide" }, "Ứng dụng được phát triển bởi MiMi Huỳnh AI - Academy")
+                    React.createElement('p', { className: "text-base text-yellow-400 font-semibold tracking-wide" }, "Ứng dụng được phát triển bởi Mr. Huỳnh Xuyên Sơn")
                 )
             )
         )

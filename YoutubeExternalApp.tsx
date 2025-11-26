@@ -105,7 +105,7 @@ const YoutubeExternalApp = ({ geminiApiKey, openaiApiKey, openRouterApiKey, sele
 
                 // Fallback Chain: Gemini -> OpenAI -> OpenRouter
 
-                // 1. Try Gemini
+                // 1. Try Gemini (Use Lite model for efficiency)
                 if (!translatedText && (selectedAIModel === 'gemini' || (selectedAIModel === 'auto' && geminiApiKey))) {
                     try {
                         const ai = new window.GoogleGenAI({ apiKey: geminiApiKey });
@@ -155,7 +155,7 @@ const YoutubeExternalApp = ({ geminiApiKey, openaiApiKey, openRouterApiKey, sele
                                 'Authorization': `Bearer ${openRouterApiKey}`
                             },
                             body: JSON.stringify({
-                                model: 'google/gemini-2.0-flash-001',
+                                model: 'google/gemini-2.5-pro',
                                 messages: [{ role: 'user', content: userPrompt }]
                             })
                         });
